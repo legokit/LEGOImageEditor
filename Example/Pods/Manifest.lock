@@ -1,0 +1,23 @@
+PODS:
+  - LEGOImageEditor (0.1.0)
+  - Masonry (1.1.0)
+
+DEPENDENCIES:
+  - LEGOImageEditor (from `../`)
+  - Masonry
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Masonry
+
+EXTERNAL SOURCES:
+  LEGOImageEditor:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  LEGOImageEditor: d44fa7a0c74f1b1e200507ee0b25df6a9b2d97af
+  Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
+
+PODFILE CHECKSUM: cc00049088a61d4339ea1fea205cba737c185078
+
+COCOAPODS: 1.6.1

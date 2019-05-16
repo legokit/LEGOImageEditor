@@ -1,0 +1,6 @@
+framework module Pods_LEGOImageEditor_Tests {
+  umbrella header "Pods-LEGOImageEditor_Tests-umbrella.h"
+
+  export *
+  module * { export * }
+}

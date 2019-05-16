@@ -1,0 +1,13 @@
+use_frameworks!
+
+platform :ios, '8.0'
+
+target 'LEGOImageEditor_Example' do
+  pod 'LEGOImageEditor', :path => '../'
+  pod 'Masonry'
+  target 'LEGOImageEditor_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end

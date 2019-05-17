@@ -13,6 +13,9 @@
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) JPImageresizerFrameView *frameView;
 @property (nonatomic, strong) NSMutableArray *allDirections;
+
+@property (nonatomic, strong) CAShapeLayer *bgLayer;
+@property (nonatomic, assign) CGRect maskRect;
 @end
 
 @implementation JPImageresizerView {
@@ -34,14 +37,6 @@
 - (void)setResizeImage:(UIImage *)resizeImage {
     self.imageView.image = resizeImage;
     [self updateSubviewLayouts];
-}
-
-- (void)setResizeWHScale:(CGFloat)resizeWHScale {
-    [self.frameView setResizeWHScale:resizeWHScale animated:NO];
-}
-
-- (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
-    [self.frameView setResizeWHScale:resizeWHScale animated:isAnimated];
 }
 
 - (void)setIsClockwiseRotation:(BOOL)isClockwiseRotation {
@@ -95,12 +90,21 @@
         CGFloat width = self.bounds.size.width;
         CGFloat height = self.bounds.size.height;
         _contentSize = CGSizeMake(width, height);
+        _maskRect = CGRectZero;
         [self setupBase];
         [self setupScorllView];
         [self setupImageViewWithImage:resizeImage];
         [self setupFrameViewWithFillColor:fillColor
                               strokeColor:strokeColor
                             resizeWHScale:resizeWHScale];
+        
+        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        shapeLayer.frame = self.bounds;
+        shapeLayer.lineWidth = 0;
+        shapeLayer.fillRule = kCAFillRuleEvenOdd;
+        shapeLayer.fillColor = fillColor.CGColor;
+        [self.layer addSublayer:shapeLayer];
+        self.bgLayer = shapeLayer;
     }
     return self;
 }
@@ -177,8 +181,8 @@
 
 #pragma mark - 更新布局
 - (void)updateSubviewLayouts {
+    [self setupBgLayerPathDismiss];
     self.directionIndex = 0;
-    
     self.scrollView.layer.transform = CATransform3DIdentity;
     self.scrollView.minimumZoomScale = 1.0;
     self.scrollView.zoomScale = self.scrollView.minimumZoomScale;
@@ -204,6 +208,7 @@
 
 #pragma mark - 重置
 - (void)recovery {
+    [self setupBgLayerPathDismiss];
     self.directionIndex = 0;
     CGFloat x = (_contentSize.width - self.scrollView.bounds.size.width) * 0.5;
     CGFloat y = (_contentSize.height - self.scrollView.bounds.size.height) * 0.5;
@@ -232,35 +237,49 @@
 
 #pragma mark - 旋转
 - (void)rotation {
-    self.directionIndex += 1;
-    if (self.directionIndex > self.allDirections.count - 1) self.directionIndex = 0;
+    CGRect maskRect = [self convertRect:self.frameView.imageresizerFrame fromView:self.frameView];
+    NSLog(@"maskRect=%@",[NSValue valueWithCGRect:maskRect]);
     
-    JPImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
-    
-    CGFloat scale = 1;
-    if (direction == JPImageresizerHorizontalLeftDirection ||
-        direction == JPImageresizerHorizontalRightDirection) {
-        scale = self.frame.size.width / self.scrollView.bounds.size.height;
-    } else {
-        scale = self.scrollView.bounds.size.height / self.frame.size.width;
-    }
-    
-    CGFloat angle = (self.isClockwiseRotation ? 1.0 : -1.0) * M_PI * 0.5;
+    [self setupBgLayerPathShowWithRect:maskRect completion:^{
+        self.directionIndex += 1;
+        if (self.directionIndex > self.allDirections.count - 1) self.directionIndex = 0;
+        
+        JPImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
+        
+        CGFloat scale = 1;
+        if (direction == JPImageresizerHorizontalLeftDirection ||
+            direction == JPImageresizerHorizontalRightDirection) {
+            scale = self.frame.size.width / self.scrollView.bounds.size.height;
+        } else {
+            scale = self.scrollView.bounds.size.height / self.frame.size.width;
+        }
+        
+        CGFloat angle = (self.isClockwiseRotation ? 1.0 : -1.0) * M_PI * 0.5;
+        
+        CATransform3D svTransform = self.scrollView.layer.transform;
+        svTransform = CATransform3DScale(svTransform, scale, scale, 1);
+        svTransform = CATransform3DRotate(svTransform, angle, 0, 0, 1);
+        
+        CATransform3D fvTransform = self.frameView.layer.transform;
+        fvTransform = CATransform3DScale(fvTransform, scale, scale, 1);
+        fvTransform = CATransform3DRotate(fvTransform, angle, 0, 0, 1);
+        
+        NSTimeInterval duration = 0.23;
+        [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
+            self.scrollView.layer.transform = svTransform;
+            self.frameView.layer.transform = fvTransform;
+            [self.frameView rotationWithDirection:direction rotationDuration:duration];
+        } completion:nil];
+    }];
+}
 
-    CATransform3D svTransform = self.scrollView.layer.transform;
-    svTransform = CATransform3DScale(svTransform, scale, scale, 1);
-    svTransform = CATransform3DRotate(svTransform, angle, 0, 0, 1);
-    
-    CATransform3D fvTransform = self.frameView.layer.transform;
-    fvTransform = CATransform3DScale(fvTransform, scale, scale, 1);
-    fvTransform = CATransform3DRotate(fvTransform, angle, 0, 0, 1);
-    
-    NSTimeInterval duration = 0.23;
-    [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
-        self.scrollView.layer.transform = svTransform;
-        self.frameView.layer.transform = fvTransform;
-        [self.frameView rotationWithDirection:direction rotationDuration:duration];
-    } completion:nil];
+#pragma mark - 修改比例
+- (void)setResizeWHScale:(CGFloat)resizeWHScale {
+    [self setResizeWHScale:resizeWHScale animated:NO];
+}
+- (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
+    [self setupBgLayerPathDismiss];
+    [self.frameView setResizeWHScale:resizeWHScale animated:isAnimated];
 }
 
 #pragma mark - 截图
@@ -285,5 +304,34 @@
     return self.imageView;
 }
 
+- (void)setupBgLayerPathDismiss {
+    self.bgLayer.hidden = YES;
+}
+
+- (void)setupBgLayerPathShowWithRect:(CGRect)maskRect completion: (void (^)(void))completion {
+    self.bgLayer.hidden = NO;
+    if (fabs(maskRect.origin.x - self.maskRect.origin.x) < 1 &&
+        fabs(maskRect.origin.y - self.maskRect.origin.y) < 1 &&
+        fabs(maskRect.size.width - self.maskRect.size.width) < 1 &&
+        fabs(maskRect.size.height - self.maskRect.size.height) < 1) {
+        !completion ? :completion();
+    }
+    else {
+        UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
+        UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];
+        [bgPath appendPath:framePath];
+        
+        [CATransaction begin];
+        [CATransaction setDisableActions:YES];
+        self.bgLayer.path = bgPath.CGPath;
+        [CATransaction commit];
+        [CATransaction setCompletionBlock:^{
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                !completion ? :completion();
+            });
+        }];
+    }
+    self.maskRect = maskRect;
+}
 
 @end

@@ -24,19 +24,16 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		CB6437F4A8EE7979511FCFC5 /* Pods_LEGOImageEditor_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A590D91EF38B37B63BFF68AB /* Pods_LEGOImageEditor_Tests.framework */; };
-		E857CC9D228B9E81007A1E67 /* LGImageEditorView.m in Sources */ = {isa = PBXBuildFile; fileRef = E857CC9C228B9E81007A1E67 /* LGImageEditorView.m */; };
+		E85DB124228E5C8700D6125D /* JPImageresizerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB11B228E5C8700D6125D /* JPImageresizerView.m */; };
+		E85DB125228E5C8700D6125D /* UIImage+JPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB11C228E5C8700D6125D /* UIImage+JPExtension.m */; };
+		E85DB126228E5C8700D6125D /* .gitkeep in Resources */ = {isa = PBXBuildFile; fileRef = E85DB11D228E5C8700D6125D /* .gitkeep */; };
+		E85DB127228E5C8700D6125D /* JPImageresizerFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB11E228E5C8700D6125D /* JPImageresizerFrameView.m */; };
+		E85DB128228E5C8700D6125D /* JPImageresizerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB121228E5C8700D6125D /* JPImageresizerConfigure.m */; };
 		E860B37A228964EF00853A78 /* LGImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B379228964EF00853A78 /* LGImagePickerViewController.m */; };
 		E860B37D22896B3D00853A78 /* LGImagePickerAlbumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B37C22896B3D00853A78 /* LGImagePickerAlbumModel.m */; };
 		E860B38022896FBD00853A78 /* LGImagePickerAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B37F22896FBD00853A78 /* LGImagePickerAlbumCell.m */; };
-		E87950DF228A501A009C59C2 /* LGImageEditorViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E87950DE228A501A009C59C2 /* LGImageEditorViewController.m */; };
-		E87950E2228A70FD009C59C2 /* UIView+HYDView.m in Sources */ = {isa = PBXBuildFile; fileRef = E87950E0228A70FD009C59C2 /* UIView+HYDView.m */; };
 		E8B631D7228BE88700EF77ED /* LGImageResozerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631D6228BE88700EF77ED /* LGImageResozerViewController.m */; };
-		E8B631E3228BECEC00EF77ED /* JPImageresizerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631DA228BECEC00EF77ED /* JPImageresizerView.m */; };
-		E8B631E4228BECEC00EF77ED /* UIImage+JPExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631DB228BECEC00EF77ED /* UIImage+JPExtension.m */; };
-		E8B631E6228BECEC00EF77ED /* JPImageresizerFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631DD228BECEC00EF77ED /* JPImageresizerFrameView.m */; };
-		E8B631E7228BECEC00EF77ED /* JPImageresizerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631E0228BECEC00EF77ED /* JPImageresizerConfigure.m */; };
 		E8B631EA228BEDA300EF77ED /* LGIamgeShowViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E8B631E9228BEDA300EF77ED /* LGIamgeShowViewController.m */; };
-		E8D081E8228BE1540030CE3D /* UIImage+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = E8D081E7228BE1540030CE3D /* UIImage+Util.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -80,33 +77,26 @@
 		CD60E080B89BFC9CE434E73F /* Pods-LEGOImageEditor_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LEGOImageEditor_Example.debug.xcconfig"; path = "Target Support Files/Pods-LEGOImageEditor_Example/Pods-LEGOImageEditor_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DF74E82FE869F745C91923A8 /* Pods_LEGOImageEditor_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LEGOImageEditor_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B32053BEA012EB3D6115A2 /* LEGOImageEditor.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LEGOImageEditor.podspec; path = ../LEGOImageEditor.podspec; sourceTree = "<group>"; };
-		E857CC9B228B9E81007A1E67 /* LGImageEditorView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImageEditorView.h; sourceTree = "<group>"; };
-		E857CC9C228B9E81007A1E67 /* LGImageEditorView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImageEditorView.m; sourceTree = "<group>"; };
+		E85DB11A228E5C8700D6125D /* JPImageresizerConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerConfigure.h; sourceTree = "<group>"; };
+		E85DB11B228E5C8700D6125D /* JPImageresizerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerView.m; sourceTree = "<group>"; };
+		E85DB11C228E5C8700D6125D /* UIImage+JPExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+JPExtension.m"; sourceTree = "<group>"; };
+		E85DB11D228E5C8700D6125D /* .gitkeep */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = .gitkeep; sourceTree = "<group>"; };
+		E85DB11E228E5C8700D6125D /* JPImageresizerFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerFrameView.m; sourceTree = "<group>"; };
+		E85DB11F228E5C8700D6125D /* JPImageresizerTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerTypedef.h; sourceTree = "<group>"; };
+		E85DB120228E5C8700D6125D /* JPImageresizerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerView.h; sourceTree = "<group>"; };
+		E85DB121228E5C8700D6125D /* JPImageresizerConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerConfigure.m; sourceTree = "<group>"; };
+		E85DB122228E5C8700D6125D /* JPImageresizerFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerFrameView.h; sourceTree = "<group>"; };
+		E85DB123228E5C8700D6125D /* UIImage+JPExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+JPExtension.h"; sourceTree = "<group>"; };
 		E860B378228964EF00853A78 /* LGImagePickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImagePickerViewController.h; sourceTree = "<group>"; };
 		E860B379228964EF00853A78 /* LGImagePickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImagePickerViewController.m; sourceTree = "<group>"; };
 		E860B37B22896B3D00853A78 /* LGImagePickerAlbumModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImagePickerAlbumModel.h; sourceTree = "<group>"; };
 		E860B37C22896B3D00853A78 /* LGImagePickerAlbumModel.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImagePickerAlbumModel.m; sourceTree = "<group>"; };
 		E860B37E22896FBD00853A78 /* LGImagePickerAlbumCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImagePickerAlbumCell.h; sourceTree = "<group>"; };
 		E860B37F22896FBD00853A78 /* LGImagePickerAlbumCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImagePickerAlbumCell.m; sourceTree = "<group>"; };
-		E87950DD228A501A009C59C2 /* LGImageEditorViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImageEditorViewController.h; sourceTree = "<group>"; };
-		E87950DE228A501A009C59C2 /* LGImageEditorViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImageEditorViewController.m; sourceTree = "<group>"; };
-		E87950E0228A70FD009C59C2 /* UIView+HYDView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+HYDView.m"; sourceTree = "<group>"; };
-		E87950E1228A70FD009C59C2 /* UIView+HYDView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+HYDView.h"; sourceTree = "<group>"; };
 		E8B631D5228BE88700EF77ED /* LGImageResozerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImageResozerViewController.h; sourceTree = "<group>"; };
 		E8B631D6228BE88700EF77ED /* LGImageResozerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImageResozerViewController.m; sourceTree = "<group>"; };
-		E8B631D9228BECEC00EF77ED /* JPImageresizerConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerConfigure.h; sourceTree = "<group>"; };
-		E8B631DA228BECEC00EF77ED /* JPImageresizerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerView.m; sourceTree = "<group>"; };
-		E8B631DB228BECEC00EF77ED /* UIImage+JPExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+JPExtension.m"; sourceTree = "<group>"; };
-		E8B631DD228BECEC00EF77ED /* JPImageresizerFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerFrameView.m; sourceTree = "<group>"; };
-		E8B631DE228BECEC00EF77ED /* JPImageresizerTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerTypedef.h; sourceTree = "<group>"; };
-		E8B631DF228BECEC00EF77ED /* JPImageresizerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerView.h; sourceTree = "<group>"; };
-		E8B631E0228BECEC00EF77ED /* JPImageresizerConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JPImageresizerConfigure.m; sourceTree = "<group>"; };
-		E8B631E1228BECEC00EF77ED /* JPImageresizerFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JPImageresizerFrameView.h; sourceTree = "<group>"; };
-		E8B631E2228BECEC00EF77ED /* UIImage+JPExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+JPExtension.h"; sourceTree = "<group>"; };
 		E8B631E8228BEDA300EF77ED /* LGIamgeShowViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGIamgeShowViewController.h; sourceTree = "<group>"; };
 		E8B631E9228BEDA300EF77ED /* LGIamgeShowViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGIamgeShowViewController.m; sourceTree = "<group>"; };
-		E8D081E6228BE1540030CE3D /* UIImage+Util.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+Util.h"; sourceTree = "<group>"; };
-		E8D081E7228BE1540030CE3D /* UIImage+Util.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Util.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,15 +177,8 @@
 				E8B631D6228BE88700EF77ED /* LGImageResozerViewController.m */,
 				E8B631E8228BEDA300EF77ED /* LGIamgeShowViewController.h */,
 				E8B631E9228BEDA300EF77ED /* LGIamgeShowViewController.m */,
-				E8B631D8228BECEC00EF77ED /* Classes */,
-				E87950E1228A70FD009C59C2 /* UIView+HYDView.h */,
-				E87950E0228A70FD009C59C2 /* UIView+HYDView.m */,
-				E87950DD228A501A009C59C2 /* LGImageEditorViewController.h */,
-				E87950DE228A501A009C59C2 /* LGImageEditorViewController.m */,
-				E857CC9B228B9E81007A1E67 /* LGImageEditorView.h */,
-				E857CC9C228B9E81007A1E67 /* LGImageEditorView.m */,
-				E8D081E6228BE1540030CE3D /* UIImage+Util.h */,
-				E8D081E7228BE1540030CE3D /* UIImage+Util.m */,
+				E85DB118228E5C8700D6125D /* Classes */,
+				E85DB119228E5C8700D6125D /* Classes1 */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -255,20 +238,28 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		E8B631D8228BECEC00EF77ED /* Classes */ = {
+		E85DB118228E5C8700D6125D /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				E8B631D9228BECEC00EF77ED /* JPImageresizerConfigure.h */,
-				E8B631E0228BECEC00EF77ED /* JPImageresizerConfigure.m */,
-				E8B631DF228BECEC00EF77ED /* JPImageresizerView.h */,
-				E8B631DA228BECEC00EF77ED /* JPImageresizerView.m */,
-				E8B631E1228BECEC00EF77ED /* JPImageresizerFrameView.h */,
-				E8B631DD228BECEC00EF77ED /* JPImageresizerFrameView.m */,
-				E8B631E2228BECEC00EF77ED /* UIImage+JPExtension.h */,
-				E8B631DB228BECEC00EF77ED /* UIImage+JPExtension.m */,
-				E8B631DE228BECEC00EF77ED /* JPImageresizerTypedef.h */,
 			);
 			path = Classes;
+			sourceTree = "<group>";
+		};
+		E85DB119228E5C8700D6125D /* Classes1 */ = {
+			isa = PBXGroup;
+			children = (
+				E85DB11A228E5C8700D6125D /* JPImageresizerConfigure.h */,
+				E85DB11B228E5C8700D6125D /* JPImageresizerView.m */,
+				E85DB11C228E5C8700D6125D /* UIImage+JPExtension.m */,
+				E85DB11D228E5C8700D6125D /* .gitkeep */,
+				E85DB11E228E5C8700D6125D /* JPImageresizerFrameView.m */,
+				E85DB11F228E5C8700D6125D /* JPImageresizerTypedef.h */,
+				E85DB120228E5C8700D6125D /* JPImageresizerView.h */,
+				E85DB121228E5C8700D6125D /* JPImageresizerConfigure.m */,
+				E85DB122228E5C8700D6125D /* JPImageresizerFrameView.h */,
+				E85DB123228E5C8700D6125D /* UIImage+JPExtension.h */,
+			);
+			path = Classes1;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -357,6 +348,7 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				E85DB126228E5C8700D6125D /* .gitkeep in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
@@ -451,19 +443,15 @@
 				E860B38022896FBD00853A78 /* LGImagePickerAlbumCell.m in Sources */,
 				6003F59E195388D20070C39A /* LGAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LGViewController.m in Sources */,
-				E8B631E6228BECEC00EF77ED /* JPImageresizerFrameView.m in Sources */,
-				E8B631E4228BECEC00EF77ED /* UIImage+JPExtension.m in Sources */,
 				E8B631D7228BE88700EF77ED /* LGImageResozerViewController.m in Sources */,
-				E857CC9D228B9E81007A1E67 /* LGImageEditorView.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				E87950DF228A501A009C59C2 /* LGImageEditorViewController.m in Sources */,
+				E85DB124228E5C8700D6125D /* JPImageresizerView.m in Sources */,
 				E860B37A228964EF00853A78 /* LGImagePickerViewController.m in Sources */,
-				E8B631E7228BECEC00EF77ED /* JPImageresizerConfigure.m in Sources */,
-				E8D081E8228BE1540030CE3D /* UIImage+Util.m in Sources */,
+				E85DB128228E5C8700D6125D /* JPImageresizerConfigure.m in Sources */,
 				E8B631EA228BEDA300EF77ED /* LGIamgeShowViewController.m in Sources */,
 				E860B37D22896B3D00853A78 /* LGImagePickerAlbumModel.m in Sources */,
-				E87950E2228A70FD009C59C2 /* UIView+HYDView.m in Sources */,
-				E8B631E3228BECEC00EF77ED /* JPImageresizerView.m in Sources */,
+				E85DB125228E5C8700D6125D /* UIImage+JPExtension.m in Sources */,
+				E85DB127228E5C8700D6125D /* JPImageresizerFrameView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

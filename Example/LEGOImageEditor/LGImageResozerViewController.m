@@ -9,7 +9,6 @@
 #import "LGImageResozerViewController.h"
 #import "JPImageresizerConfigure.h"
 #import "JPImageresizerView.h"
-#import "LGImageEditorViewController.h"
 #import "LGIamgeShowViewController.h"
 
 @interface LGImageResozerViewController ()

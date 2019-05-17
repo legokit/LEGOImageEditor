@@ -11,7 +11,6 @@
 #import <Masonry/Masonry.h>
 #import "LGImagePickerAlbumModel.h"
 #import "LGImagePickerAlbumCell.h"
-#import "LGImageEditorViewController.h"
 #import "LGImageResozerViewController.h"
 
 @interface LGImagePickerViewController ()<UICollectionViewDataSource, UICollectionViewDelegate>

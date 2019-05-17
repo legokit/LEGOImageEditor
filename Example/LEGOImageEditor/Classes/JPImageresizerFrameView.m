@@ -28,6 +28,10 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 @property (nonatomic, assign) CGRect maxResizeFrame;
 @property (nonatomic, assign) CGRect imageresizerFrame;
 
+@property (nonatomic, assign) BOOL isCanRotation;
+@property (nonatomic, assign) BOOL isCanResizeWHScale;
+
+
 - (CGSize)imageresizerSize;
 - (CGSize)imageViewSzie;
 @end
@@ -39,6 +43,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 }
 
 #pragma mark -setter / getter
+
 - (void)setFillColor:(UIColor *)fillColor {
     _fillColor = fillColor;
     [CATransaction begin];
@@ -60,20 +65,12 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     [CATransaction commit];
 }
 
+- (void)setImageresizerFrame:(CGRect)imageresizerFrame {
+    _imageresizerFrame = imageresizerFrame;
+ }
+
 - (void)setResizeWHScale:(CGFloat)resizeWHScale {
     [self setResizeWHScale:resizeWHScale animated:NO];
-}
-
-- (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
-    if (resizeWHScale > 0) {
-        if (self.rotationDirection == JPImageresizerHorizontalLeftDirection ||
-            self.rotationDirection == JPImageresizerHorizontalRightDirection) {
-            resizeWHScale = 1.0 / resizeWHScale;
-        }
-    }
-    if (_resizeWHScale == resizeWHScale) return;
-    _resizeWHScale = resizeWHScale;
-    if (self.superview) [self updateImageOriginFrameWithDirection:_rotationDirection];
 }
 
 - (CGSize)imageresizerSize {
@@ -190,14 +187,15 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
                     imageView:(UIImageView *)imageView {
     
     if (self = [super initWithFrame:frame]) {
-        self.clipsToBounds = YES;
-        
         self.scrollView = scrollView;
         self.imageView = imageView;
 
         _sizeScale = 1.0;
         _rotationDirection = JPImageresizerVerticalUpDirection;
         _contentSize = contentSize;
+        
+        _isCanRotation = YES;
+        _isCanResizeWHScale = YES;
         
         self.bgLayer = [self createShapeLayer:0];
         
@@ -235,7 +233,11 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 #pragma mark -重置
 - (void)recovery {
-    [self updateRotationDirection:JPImageresizerVerticalUpDirection];
+    [self recoveryWithDirection:JPImageresizerVerticalUpDirection];
+}
+
+- (void)recoveryWithDirection:(JPImageresizerRotationDirection)direction {
+    [self updateRotationDirection:direction];
     CGRect adjustResizeFrame = [self adjustResizeFrame];
     UIEdgeInsets contentInset = [self scrollViewContentInsetWithAdjustResizeFrame:adjustResizeFrame];
     CGFloat minZoomScale = [self scrollViewMinZoomScaleWithResizeSize:adjustResizeFrame.size];
@@ -248,22 +250,52 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     self.scrollView.contentOffset = CGPointMake(contentOffsetX, contentOffsetY);
 }
 
+#pragma mark -刚刚选中区域
+- (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
+    self.isCanResizeWHScale = NO;
+    __weak typeof(self)weakSelf = self;
+    [self setLineAnimation:0.05 completion:^{
+        weakSelf.isCanResizeWHScale = YES;
+    }];
+    if (resizeWHScale > 0) {
+        if (self.rotationDirection == JPImageresizerHorizontalLeftDirection ||
+            self.rotationDirection == JPImageresizerHorizontalRightDirection) {
+            resizeWHScale = 1.0 / resizeWHScale;
+        }
+    }
+    if (_resizeWHScale == resizeWHScale) return;
+    _resizeWHScale = resizeWHScale;
+    if (self.superview) {
+        [self updateImageOriginFrameWithDirection:_rotationDirection];
+        [self recoveryWithDirection:_rotationDirection];
+    };
+}
+
 #pragma mark -旋转
 - (void)rotationWithDirection:(JPImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration {
+    self.isCanRotation = NO;
+    __weak typeof(self)weakSelf = self;
+    [self setLineAnimation:0.25 completion:^{
+        weakSelf.isCanRotation = YES;
+    }];
+    [self updateImageresizerZoomWithAnimateDuration:rotationDuration];
+    [self recoveryWithDirection:direction];
+}
+
+- (void)setLineAnimation:(NSTimeInterval)duration completion: (void (^ __nullable)(void))completion {
     for (NSArray *array in self.lines) {
         for (CAShapeLayer *line in array) {
             line.hidden = YES;
         }
     }
-    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.25 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(duration * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         for (NSArray *array in self.lines) {
             for (CAShapeLayer *line in array) {
                 line.hidden = NO;
             }
         }
+        !completion ? :completion();
     });
-    [self updateRotationDirection:direction];
-    [self updateImageresizerZoomWithAnimateDuration:rotationDuration];
 }
 
 - (void)updateRotationDirection:(JPImageresizerRotationDirection)rotationDirection {
@@ -353,7 +385,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 #pragma mark -网格
 - (void)updateImageresizerFrame:(CGRect)imageresizerFrame {
-    _imageresizerFrame = imageresizerFrame;
+    self.imageresizerFrame = imageresizerFrame;
     CGFloat imageresizerX = imageresizerFrame.origin.x;
     CGFloat imageresizerY = imageresizerFrame.origin.y;
     
@@ -372,10 +404,9 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     UIBezierPath *verLinePath2 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX + oneThirdW * 2, imageresizerY) length:imageresizerH];
     UIBezierPath *verLinePath3 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX + oneThirdW * 3, imageresizerY) length:imageresizerH];
     
-    UIBezierPath *bgPath;
+    // 遮罩部分延伸放大，避免旋转出现页面漏出
+    UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:CGRectMake(self.bounds.origin.x - 500, self.bounds.origin.y - 500, self.bounds.size.width + 1000, self.bounds.size.height + 1000)];
     UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:imageresizerFrame];
-    
-    bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
     [bgPath appendPath:framePath];
     
     [CATransaction begin];
@@ -391,7 +422,8 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     self.lines.lastObject[2].path = verLinePath2.CGPath;
     self.lines.lastObject[3].path = verLinePath3.CGPath;
     
-    _bgLayer.path = bgPath.CGPath;
+    self.bgLayer.path = bgPath.CGPath;
+
     [CATransaction commit];
 }
 

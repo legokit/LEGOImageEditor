@@ -28,7 +28,7 @@
         
     }];
     
-    self.view.backgroundColor = [UIColor colorWithWhite:1 alpha:1];
+    self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
     
     
     JPImageresizerView *imageresizerView = [JPImageresizerView imageresizerViewWithConfigure:configure1];
@@ -57,22 +57,15 @@
     
     if (point.y > self.view.bounds.size.height - 100) {
         if (point.x < self.view.bounds.size.width / 3.0) {
-
-            CGFloat zoom = self.imageresizerView.scrollView.zoomScale;
-            if (self.is2_3) {
-                self.imageresizerView.resizeWHScale = 3 / 2.0;
-                self.is2_3 = NO;
-            }
-            else {
-                self.imageresizerView.resizeWHScale = 2 / 3.0;
-                self.is2_3 = YES;
-            }
-            
-            if (0 == self.imageresizerView.directionIndex) {
-                [self.imageresizerView recovery];
-            }
-            else {
-                self.imageresizerView.scrollView.zoomScale = zoom;
+            if ([self.imageresizerView isCanResizeWHScale]) {
+                if (self.is2_3) {
+                    self.imageresizerView.resizeWHScale = 3 / 2.0;
+                    self.is2_3 = NO;
+                }
+                else {
+                    self.imageresizerView.resizeWHScale = 2 / 3.0;
+                    self.is2_3 = YES;
+                }
             }
         }
         else if (point.x < self.view.bounds.size.width / 3.0 * 2) {
@@ -90,7 +83,9 @@
 
 
 - (void)rotate:(id)sender {
-    [self.imageresizerView rotation];
+    if ([self.imageresizerView isCanRotation]) {
+        [self.imageresizerView rotation];
+    }
 }
 
 - (void)resize:(id)sender {

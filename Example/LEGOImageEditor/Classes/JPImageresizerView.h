@@ -44,6 +44,10 @@
 /** 当前旋转的下标系数 */
 @property (nonatomic, assign) NSInteger directionIndex;
 
+@property (nonatomic, assign, readonly) BOOL isCanRotation;
+
+@property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
+
 /*!
  @method
  @brief 旋转图片

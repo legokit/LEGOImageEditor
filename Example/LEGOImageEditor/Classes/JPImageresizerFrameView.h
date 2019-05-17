@@ -23,17 +23,24 @@
 
 @property (nonatomic, strong) UIColor *strokeColor;
 
+@property (nonatomic, assign, readonly) CGRect imageresizerFrame;
+
 @property (nonatomic, assign) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
+
+@property (nonatomic, assign, readonly) BOOL isCanRotation;
+@property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
 
 @property (nonatomic, assign, readonly) JPImageresizerRotationDirection rotationDirection;
 
 @property (nonatomic, assign, readonly) CGFloat sizeScale;
 
 - (void)recovery;
+- (void)recoveryWithDirection:(JPImageresizerRotationDirection)direction;
 
 - (void)rotationWithDirection:(JPImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration;
 
 - (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete isOriginImageSize:(BOOL)isOriginImageSize referenceWidth:(CGFloat)referenceWidth;
+
 
 @end

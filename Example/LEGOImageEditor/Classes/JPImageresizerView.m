@@ -67,6 +67,14 @@
     return _frameView.resizeWHScale;
 }
 
+- (BOOL)isCanRotation {
+    return _frameView.isCanRotation;
+}
+
+- (BOOL)isCanResizeWHScale {
+    return _frameView.isCanResizeWHScale;
+}
+
 #pragma mark - init
 + (instancetype)imageresizerViewWithConfigure:(JPImageresizerConfigure *)configure {
     JPImageresizerView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage

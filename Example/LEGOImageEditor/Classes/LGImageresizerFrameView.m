@@ -1,13 +1,13 @@
 //
-//  JPImageresizerFrameView.m
-//  DesignSpaceRestructure
+//  LGImageresizerFrameView.m
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/11.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
-#import "JPImageresizerFrameView.h"
-#import "UIImage+JPExtension.h"
+#import "LGImageresizerFrameView.h"
+#import "UIImage+LGExtension.h"
 
 /** keypath */
 #define aKeyPath(objc, keyPath) @(((void)objc.keyPath, #keyPath))
@@ -17,7 +17,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     JPVerticalLine
 };
 
-@interface JPImageresizerFrameView ()
+@interface LGImageresizerFrameView ()
 @property (nonatomic, weak) UIScrollView *scrollView;
 @property (nonatomic, weak) UIImageView *imageView;
 @property (nonatomic, weak) CAShapeLayer *bgLayer;
@@ -36,7 +36,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 - (CGSize)imageViewSzie;
 @end
 
-@implementation JPImageresizerFrameView {
+@implementation LGImageresizerFrameView {
     CGFloat _baseImageW;
     CGFloat _baseImageH;
     CGSize _contentSize;
@@ -67,7 +67,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 - (void)setImageresizerFrame:(CGRect)imageresizerFrame {
     _imageresizerFrame = imageresizerFrame;
- }
+}
 
 - (void)setResizeWHScale:(CGFloat)resizeWHScale {
     [self setResizeWHScale:resizeWHScale animated:NO];
@@ -82,8 +82,8 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 - (CGSize)imageViewSzie {
     CGFloat w = ((NSInteger)(self.imageView.frame.size.width)) * 1.0;
     CGFloat h = ((NSInteger)(self.imageView.frame.size.height)) * 1.0;
-    if (self.rotationDirection == JPImageresizerVerticalUpDirection ||
-        self.rotationDirection == JPImageresizerVerticalDownDirection) {
+    if (self.rotationDirection == LGImageresizerVerticalUpDirection ||
+        self.rotationDirection == LGImageresizerVerticalDownDirection) {
         return CGSizeMake(w, h);
     } else {
         return CGSizeMake(h, w);
@@ -189,9 +189,9 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     if (self = [super initWithFrame:frame]) {
         self.scrollView = scrollView;
         self.imageView = imageView;
-
+        
         _sizeScale = 1.0;
-        _rotationDirection = JPImageresizerVerticalUpDirection;
+        _rotationDirection = LGImageresizerVerticalUpDirection;
         _contentSize = contentSize;
         
         _isCanRotation = YES;
@@ -211,7 +211,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
             [verLines addObject:line];
         }
         [self.lines addObjectsFromArray:@[horLines,verLines]];
-
+        
         self.fillColor = fillColor;
         self.strokeColor = strokeColor;
         self.resizeWHScale = resizeWHScale;
@@ -220,7 +220,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 }
 
 #pragma mark -更新页面
-- (void)updateImageOriginFrameWithDirection:(JPImageresizerRotationDirection)rotationDirection {
+- (void)updateImageOriginFrameWithDirection:(LGImageresizerRotationDirection)rotationDirection {
     _baseImageW = self.imageView.bounds.size.width;
     _baseImageH = self.imageView.bounds.size.height;
     CGFloat x = (self.bounds.size.width - _baseImageW) * 0.5;
@@ -233,10 +233,10 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 #pragma mark -重置
 - (void)recovery {
-    [self recoveryWithDirection:JPImageresizerVerticalUpDirection];
+    [self recoveryWithDirection:LGImageresizerVerticalUpDirection];
 }
 
-- (void)recoveryWithDirection:(JPImageresizerRotationDirection)direction {
+- (void)recoveryWithDirection:(LGImageresizerRotationDirection)direction {
     [self updateRotationDirection:direction];
     CGRect adjustResizeFrame = [self adjustResizeFrame];
     UIEdgeInsets contentInset = [self scrollViewContentInsetWithAdjustResizeFrame:adjustResizeFrame];
@@ -258,8 +258,8 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
         weakSelf.isCanResizeWHScale = YES;
     }];
     if (resizeWHScale > 0) {
-        if (self.rotationDirection == JPImageresizerHorizontalLeftDirection ||
-            self.rotationDirection == JPImageresizerHorizontalRightDirection) {
+        if (self.rotationDirection == LGImageresizerHorizontalLeftDirection ||
+            self.rotationDirection == LGImageresizerHorizontalRightDirection) {
             resizeWHScale = 1.0 / resizeWHScale;
         }
     }
@@ -272,7 +272,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 }
 
 #pragma mark -旋转
-- (void)rotationWithDirection:(JPImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration {
+- (void)rotationWithDirection:(LGImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration {
     self.isCanRotation = NO;
     __weak typeof(self)weakSelf = self;
     [self setLineAnimation:0.25 completion:^{
@@ -298,16 +298,16 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     });
 }
 
-- (void)updateRotationDirection:(JPImageresizerRotationDirection)rotationDirection {
+- (void)updateRotationDirection:(LGImageresizerRotationDirection)rotationDirection {
     [self updateMaxResizeFrameWithDirection:rotationDirection];
-    BOOL isVer2Hor = ((_rotationDirection == JPImageresizerVerticalUpDirection ||
-                       _rotationDirection == JPImageresizerVerticalDownDirection) &&
-                      (rotationDirection == JPImageresizerHorizontalLeftDirection ||
-                       rotationDirection == JPImageresizerHorizontalRightDirection));
-    BOOL isHor2Ver = ((_rotationDirection == JPImageresizerHorizontalLeftDirection ||
-                       _rotationDirection == JPImageresizerHorizontalRightDirection) &&
-                      (rotationDirection == JPImageresizerVerticalUpDirection ||
-                       rotationDirection == JPImageresizerVerticalDownDirection));
+    BOOL isVer2Hor = ((_rotationDirection == LGImageresizerVerticalUpDirection ||
+                       _rotationDirection == LGImageresizerVerticalDownDirection) &&
+                      (rotationDirection == LGImageresizerHorizontalLeftDirection ||
+                       rotationDirection == LGImageresizerHorizontalRightDirection));
+    BOOL isHor2Ver = ((_rotationDirection == LGImageresizerHorizontalLeftDirection ||
+                       _rotationDirection == LGImageresizerHorizontalRightDirection) &&
+                      (rotationDirection == LGImageresizerVerticalUpDirection ||
+                       rotationDirection == LGImageresizerVerticalDownDirection));
     if (isVer2Hor || isHor2Ver) _resizeWHScale = 1.0 / _resizeWHScale;
     _rotationDirection = rotationDirection;
 }
@@ -359,13 +359,13 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     }
 }
 
-- (void)updateMaxResizeFrameWithDirection:(JPImageresizerRotationDirection)direction {
+- (void)updateMaxResizeFrameWithDirection:(LGImageresizerRotationDirection)direction {
     CGFloat x = 0;
     CGFloat y = 0;
     CGFloat w = 0;
     CGFloat h = 0;
-    if (direction == JPImageresizerVerticalUpDirection ||
-        direction == JPImageresizerVerticalDownDirection) {
+    if (direction == LGImageresizerVerticalUpDirection ||
+        direction == LGImageresizerVerticalDownDirection) {
         _sizeScale = 1;
         CGFloat diffHalfW = (self.bounds.size.width - _contentSize.width) * 0.5;
         x = diffHalfW;
@@ -423,7 +423,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     self.lines.lastObject[3].path = verLinePath3.CGPath;
     
     self.bgLayer.path = bgPath.CGPath;
-
+    
     [CATransaction commit];
 }
 
@@ -460,15 +460,15 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     
     UIImageOrientation orientation;
     switch (self.rotationDirection) {
-        case JPImageresizerHorizontalLeftDirection:
+        case LGImageresizerHorizontalLeftDirection:
             orientation = UIImageOrientationLeft;
             break;
             
-        case JPImageresizerVerticalDownDirection:
+        case LGImageresizerVerticalDownDirection:
             orientation = UIImageOrientationDown;
             break;
             
-        case JPImageresizerHorizontalRightDirection:
+        case LGImageresizerHorizontalRightDirection:
             orientation = UIImageOrientationRight;
             break;
             
@@ -557,8 +557,8 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
         /**
          * 参考：http://www.jb51.net/article/81318.htm
          * 这里要注意一点CGContextDrawImage这个函数的坐标系和UIKIt的坐标系上下颠倒，需对坐标系处理如下：
-            - 1.CGContextTranslateCTM(context, 0, cropSize.height);
-            - 2.CGContextScaleCTM(context, 1, -1);
+         - 1.CGContextTranslateCTM(context, 0, cropSize.height);
+         - 2.CGContextScaleCTM(context, 1, -1);
          */
         
         UIGraphicsBeginImageContextWithOptions(cropSize, 0, deviceScale);
@@ -601,3 +601,4 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 
 @end
+

@@ -7,12 +7,13 @@
 //
 
 #import "LGImageResozerViewController.h"
-#import "JPImageresizerConfigure.h"
-#import "JPImageresizerView.h"
+#import <Masonry/Masonry.h>
+#import "LGImageresizerConfigure.h"
+#import "LGImageresizerView.h"
 #import "LGIamgeShowViewController.h"
 
 @interface LGImageResozerViewController ()
-@property (nonatomic, strong) JPImageresizerView *imageresizerView;
+@property (nonatomic, strong) LGImageresizerView *imageresizerView;
 @property (nonatomic, assign) BOOL is2_3;
 
 @end
@@ -23,14 +24,14 @@
     [super viewDidLoad];
     
     
-    JPImageresizerConfigure *configure1 = [JPImageresizerConfigure defaultConfigureWithResizeImage:self.image make:^(JPImageresizerConfigure *configure) {
+    LGImageresizerConfigure *configure1 = [LGImageresizerConfigure defaultConfigureWithResizeImage:self.image make:^(LGImageresizerConfigure *configure) {
         
     }];
     
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
     
     
-    JPImageresizerView *imageresizerView = [JPImageresizerView imageresizerViewWithConfigure:configure1];
+    LGImageresizerView *imageresizerView = [LGImageresizerView imageresizerViewWithConfigure:configure1];
     
     CGFloat resizeWHScale;
     if (self.image.size.width > self.image.size.height) {
@@ -46,8 +47,23 @@
     [self.view insertSubview:imageresizerView atIndex:0];
     self.imageresizerView = imageresizerView;
     
-
+    NSArray *arr = @[@"2:3 3:2",@"旋转",@"生成"];
     
+    NSMutableArray *array = [[NSMutableArray alloc] init];
+    for (NSString *str in arr) {
+        UILabel *label = [[UILabel alloc] init];
+        label.text = str;
+        label.textAlignment = NSTextAlignmentCenter;
+        label.textColor = [UIColor whiteColor];
+        [self.view addSubview:label];
+        [array addObject:label];
+    }
+
+    [array mas_distributeViewsAlongAxis:MASAxisTypeHorizontal withFixedSpacing:0 leadSpacing:0 tailSpacing:0];
+    [array mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.bottom.offset(0);
+        make.height.mas_equalTo(100);
+    }];
     // Do any additional setup after loading the view.
 }
 

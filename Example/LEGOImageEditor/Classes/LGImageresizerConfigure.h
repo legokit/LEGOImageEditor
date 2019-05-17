@@ -1,17 +1,17 @@
 //
-//  JPImageresizerConfigure.h
-//  JPImageresizerView
+//  LGImageresizerConfigure.h
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2018/4/22.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
-//  JPImageresizerConfigure：用于配置初始化参数
 
 #import <Foundation/Foundation.h>
-#import "JPImageresizerTypedef.h"
+#import "LGImageresizerTypedef.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@interface JPImageresizerConfigure : NSObject
-
-+ (instancetype)defaultConfigureWithResizeImage:(UIImage *)resizeImage make:(void(^)(JPImageresizerConfigure *configure))make;
+@interface LGImageresizerConfigure : NSObject
++ (instancetype)defaultConfigureWithResizeImage:(UIImage *)resizeImage make:(void(^)(LGImageresizerConfigure *configure))make;
 
 /** 裁剪图片 */
 @property (nonatomic, strong) UIImage *resizeImage;
@@ -30,5 +30,6 @@
 
 /** 是否顺时针旋转 */
 @property (nonatomic, assign) BOOL isClockwiseRotation;
-
 @end
+
+NS_ASSUME_NONNULL_END

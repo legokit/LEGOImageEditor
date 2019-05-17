@@ -1,24 +1,25 @@
+
 //
-//  JPImageresizerView.m
-//  DesignSpaceRestructure
+//  LGImageresizerView.m
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/19.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
-#import "JPImageresizerView.h"
-#import "JPImageresizerFrameView.h"
+#import "LGImageresizerView.h"
+#import "LGImageresizerFrameView.h"
 
-@interface JPImageresizerView () <UIScrollViewDelegate>
+@interface LGImageresizerView () <UIScrollViewDelegate>
 @property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) JPImageresizerFrameView *frameView;
+@property (nonatomic, weak) LGImageresizerFrameView *frameView;
 @property (nonatomic, strong) NSMutableArray *allDirections;
 
 @property (nonatomic, strong) CAShapeLayer *bgLayer;
 @property (nonatomic, assign) CGRect maskRect;
 @end
 
-@implementation JPImageresizerView {
+@implementation LGImageresizerView {
     CGSize _contentSize;
     UIViewAnimationOptions _animationOption;
 }
@@ -71,8 +72,8 @@
 }
 
 #pragma mark - init
-+ (instancetype)imageresizerViewWithConfigure:(JPImageresizerConfigure *)configure {
-    JPImageresizerView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage
++ (instancetype)imageresizerViewWithConfigure:(LGImageresizerConfigure *)configure {
+    LGImageresizerView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage
                                                                              frame:configure.viewFrame
                                                                          fillColor:configure.fillColor
                                                                        strokeColor:configure.strokeColor
@@ -112,10 +113,10 @@
 - (void)setupBase {
     self.clipsToBounds = YES;
     self.autoresizingMask = UIViewAutoresizingNone;
-    self.allDirections = [@[@(JPImageresizerVerticalUpDirection),
-                            @(JPImageresizerHorizontalLeftDirection),
-                            @(JPImageresizerVerticalDownDirection),
-                            @(JPImageresizerHorizontalRightDirection)] mutableCopy];
+    self.allDirections = [@[@(LGImageresizerVerticalUpDirection),
+                            @(LGImageresizerHorizontalLeftDirection),
+                            @(LGImageresizerVerticalDownDirection),
+                            @(LGImageresizerHorizontalRightDirection)] mutableCopy];
 }
 
 - (void)setupScorllView {
@@ -167,8 +168,8 @@
 - (void)setupFrameViewWithFillColor:(UIColor *)fillColor
                         strokeColor:(UIColor *)strokeColor
                       resizeWHScale:(CGFloat)resizeWHScale {
-    JPImageresizerFrameView *frameView =
-    [[JPImageresizerFrameView alloc] initWithFrame:self.scrollView.frame
+    LGImageresizerFrameView *frameView =
+    [[LGImageresizerFrameView alloc] initWithFrame:self.scrollView.frame
                                        contentSize:_contentSize
                                          fillColor:fillColor
                                        strokeColor:strokeColor
@@ -244,11 +245,11 @@
         self.directionIndex += 1;
         if (self.directionIndex > self.allDirections.count - 1) self.directionIndex = 0;
         
-        JPImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
+        LGImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
         
         CGFloat scale = 1;
-        if (direction == JPImageresizerHorizontalLeftDirection ||
-            direction == JPImageresizerHorizontalRightDirection) {
+        if (direction == LGImageresizerHorizontalLeftDirection ||
+            direction == LGImageresizerHorizontalRightDirection) {
             scale = self.frame.size.width / self.scrollView.bounds.size.height;
         } else {
             scale = self.scrollView.bounds.size.height / self.frame.size.width;

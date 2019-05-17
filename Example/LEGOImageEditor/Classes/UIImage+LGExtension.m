@@ -1,14 +1,14 @@
 //
-//  UIImage+JPExtension.m
-//  DesignSpaceRestructure
+//  UIImage+LGExtension.m
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/19.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
-#import "UIImage+JPExtension.h"
+#import "UIImage+LGExtension.h"
 
-@implementation UIImage (JPExtension)
+@implementation UIImage (LGExtension)
 
 - (UIImage *)jp_fixOrientation {
     if (self.imageOrientation == UIImageOrientationUp) return self;
@@ -94,11 +94,11 @@
 - (UIImage*)jp_rotate:(UIImageOrientation)orientation {
     
     CGImageRef imageRef = self.CGImage;
-
+    
     CGRect bounds = CGRectMake(0, 0, CGImageGetWidth(imageRef), CGImageGetHeight(imageRef));
     CGRect rect = bounds;
     CGAffineTransform transform = CGAffineTransformIdentity;
-
+    
     switch (orientation)
     {
         case UIImageOrientationUp:

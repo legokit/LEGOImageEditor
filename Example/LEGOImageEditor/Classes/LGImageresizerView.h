@@ -1,23 +1,23 @@
 //
-//  JPImageresizerView.h
-//  DesignSpaceRestructure
+//  LGImageresizerView.h
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/19.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "JPImageresizerConfigure.h"
+#import "LGImageresizerConfigure.h"
+NS_ASSUME_NONNULL_BEGIN
 
-@interface JPImageresizerView : UIView
-
+@interface LGImageresizerView : UIView
 /*!
  @method
  @brief 类方法（推荐）
  @param configure --- 包含了所有初始化参数
- @discussion 使用JPImageresizerConfigure配置好参数
+ @discussion 使用LGImageresizerConfigure配置好参数
  */
-+ (instancetype)imageresizerViewWithConfigure:(JPImageresizerConfigure *)configure;
++ (instancetype)imageresizerViewWithConfigure:(LGImageresizerConfigure *)configure;
 
 
 - (instancetype)initWithResizeImage:(UIImage *)resizeImage
@@ -88,3 +88,5 @@
 - (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete;
 
 @end
+
+NS_ASSUME_NONNULL_END

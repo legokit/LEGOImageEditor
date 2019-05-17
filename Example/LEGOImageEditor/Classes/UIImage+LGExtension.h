@@ -1,15 +1,16 @@
 //
-//  UIImage+JPExtension.h
-//  DesignSpaceRestructure
+//  UIImage+LGExtension.h
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/19.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
 
-@interface UIImage (JPExtension)
 
+NS_ASSUME_NONNULL_BEGIN
+
+@interface UIImage (LGExtension)
 /** 修正图片的方向 */
 - (UIImage *)jp_fixOrientation;
 
@@ -21,5 +22,6 @@
 
 /** 沿X轴翻转 */
 - (UIImage *)jp_horizontalMirror;
-
 @end
+
+NS_ASSUME_NONNULL_END

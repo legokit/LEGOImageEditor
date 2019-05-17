@@ -1,15 +1,17 @@
 //
-//  JPImageresizerFrameView.h
-//  DesignSpaceRestructure
+//  LGImageresizerFrameView.h
+//  LEGOImageEditor_Example
 //
-//  Created by 周健平 on 2017/12/11.
-//  Copyright © 2017年 周健平. All rights reserved.
+//  Created by 杨庆人 on 2019/5/17.
+//  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
-#import "JPImageresizerTypedef.h"
+#import "LGImageresizerConfigure.h"
 
-@interface JPImageresizerFrameView : UIView
+NS_ASSUME_NONNULL_BEGIN
+
+@interface LGImageresizerFrameView : UIView
 
 - (instancetype)initWithFrame:(CGRect)frame
                   contentSize:(CGSize)contentSize
@@ -31,16 +33,17 @@
 @property (nonatomic, assign, readonly) BOOL isCanRotation;
 @property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
 
-@property (nonatomic, assign, readonly) JPImageresizerRotationDirection rotationDirection;
+@property (nonatomic, assign, readonly) LGImageresizerRotationDirection rotationDirection;
 
 @property (nonatomic, assign, readonly) CGFloat sizeScale;
 
 - (void)recovery;
-- (void)recoveryWithDirection:(JPImageresizerRotationDirection)direction;
+- (void)recoveryWithDirection:(LGImageresizerRotationDirection)direction;
 
-- (void)rotationWithDirection:(JPImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration;
+- (void)rotationWithDirection:(LGImageresizerRotationDirection)direction rotationDuration:(NSTimeInterval)rotationDuration;
 
 - (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete isOriginImageSize:(BOOL)isOriginImageSize referenceWidth:(CGFloat)referenceWidth;
 
-
 @end
+
+NS_ASSUME_NONNULL_END

@@ -71,23 +71,28 @@
     CGPoint point = [[touches anyObject] locationInView:self.view];
     
     if (point.y > self.view.bounds.size.height - 100) {
+        
         if (point.x < self.view.bounds.size.width / 3.0) {
-            if ([self.imageresizerView isCanResizeWHScale]) {
-                if (self.is2_3) {
-                    self.imageresizerView.resizeWHScale = 3 / 2.0;
-                    self.is2_3 = NO;
-                }
-                else {
-                    self.imageresizerView.resizeWHScale = 2 / 3.0;
-                    self.is2_3 = YES;
-                }
-            }
+            [self resizeWHScale:nil];
         }
         else if (point.x < self.view.bounds.size.width / 3.0 * 2) {
             [self rotate:nil];
         }
         else {
             [self resize:nil];
+        }
+    }
+}
+
+- (void)resizeWHScale:(id)sender {
+    if ([self.imageresizerView isCanResizeWHScale]) {
+        if (self.is2_3) {
+            self.imageresizerView.resizeWHScale = 3 / 2.0;
+            self.is2_3 = NO;
+        }
+        else {
+            self.imageresizerView.resizeWHScale = 2 / 3.0;
+            self.is2_3 = YES;
         }
     }
 }
@@ -110,26 +115,27 @@
     [self.imageresizerView imageresizerWithComplete:^(UIImage *resizeImage) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (!strongSelf) return;
-        
         if (!resizeImage) {
             NSLog(@"没有裁剪图片");
             return;
         }
-        
         LGIamgeShowViewController *vc = [[LGIamgeShowViewController alloc] init];
         vc.image = resizeImage;
-        [self.navigationController pushViewController:vc animated:YES];
+        [weakSelf.navigationController pushViewController:vc animated:YES];
+        
     } referenceWidth:2000];
-    // 2.自定义参照宽度进行裁剪（例如按屏幕宽度）
+    
+    // 2.以imageview的宽度进行裁剪
     //    [self.imageresizerView imageresizerWithComplete:^(UIImage *resizeImage) {
     //        // 裁剪完成，resizeImage为裁剪后的图片
-    //        // 注意循环引用
-    //    } referenceWidth:[UIScreen mainScreen].bounds.size.width];
+    //
+    //    }];
+    
     
     // 3.以原图尺寸进行裁剪
     //    [self.imageresizerView originImageresizerWithComplete:^(UIImage *resizeImage) {
     //        // 裁剪完成，resizeImage为裁剪后的图片
-    //        // 注意循环引用
+    //
     //    }];
 }
 /*

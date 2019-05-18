@@ -10,7 +10,7 @@
 
 @implementation UIImage (LGExtension)
 
-- (UIImage *)jp_fixOrientation {
+- (UIImage *)lg_fixOrientation {
     if (self.imageOrientation == UIImageOrientationUp) return self;
     
     // We need to calculate the proper transformation to make the image upright.

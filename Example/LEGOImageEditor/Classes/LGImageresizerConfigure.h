@@ -25,6 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 裁剪线颜色 */
 @property (nonatomic, strong) UIColor *strokeColor;
 
+/** 边框颜色 */
+@property (nonatomic, strong) UIColor *borderColor;
+
 /** 裁剪宽高比 */
 @property (nonatomic, assign) CGFloat resizeWHScale;
 

@@ -27,7 +27,7 @@
     LGImageresizerConfigure *configure1 = [LGImageresizerConfigure defaultConfigureWithResizeImage:self.image make:^(LGImageresizerConfigure *configure) {
         
     }];
-    
+    configure1.fillColor = [UIColor blackColor];
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
     
     
@@ -54,7 +54,7 @@
         UILabel *label = [[UILabel alloc] init];
         label.text = str;
         label.textAlignment = NSTextAlignmentCenter;
-        label.textColor = [UIColor whiteColor];
+        label.textColor = [UIColor blueColor];
         [self.view addSubview:label];
         [array addObject:label];
     }
@@ -119,7 +119,7 @@
         LGIamgeShowViewController *vc = [[LGIamgeShowViewController alloc] init];
         vc.image = resizeImage;
         [self.navigationController pushViewController:vc animated:YES];
-    }];
+    } referenceWidth:2000];
     // 2.自定义参照宽度进行裁剪（例如按屏幕宽度）
     //    [self.imageresizerView imageresizerWithComplete:^(UIImage *resizeImage) {
     //        // 裁剪完成，resizeImage为裁剪后的图片

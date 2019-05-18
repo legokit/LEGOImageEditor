@@ -11,11 +11,12 @@
 #import "LGImageresizerFrameView.h"
 
 @interface LGImageresizerView () <UIScrollViewDelegate>
-@property (nonatomic, weak) UIImageView *imageView;
-@property (nonatomic, weak) LGImageresizerFrameView *frameView;
+@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong) LGImageresizerFrameView *frameView;
 @property (nonatomic, strong) NSMutableArray *allDirections;
 
 @property (nonatomic, strong) CAShapeLayer *bgLayer;
+@property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, assign) CGRect maskRect;
 @end
 
@@ -25,6 +26,69 @@
 }
 
 #pragma mark - setter/getter
+
+- (UIScrollView *)scrollView {
+    if (!_scrollView) {
+        _scrollView = ({
+            CGFloat h = _contentSize.height;
+            CGFloat w = h * h / _contentSize.width;
+            CGFloat x = (self.bounds.size.width - w) * 0.5;
+            CGFloat y = 0;
+            UIScrollView *scrollView = [[UIScrollView alloc] init];
+            scrollView.frame = CGRectMake(x, y, w, h);
+            scrollView.delegate = self;
+            scrollView.minimumZoomScale = 1.0;
+            scrollView.maximumZoomScale = MAXFLOAT;
+            scrollView.alwaysBounceVertical = YES;
+            scrollView.alwaysBounceHorizontal = YES;
+            scrollView.showsVerticalScrollIndicator = NO;
+            scrollView.showsHorizontalScrollIndicator = NO;
+            scrollView.autoresizingMask = UIViewAutoresizingNone;
+            scrollView.clipsToBounds = NO;
+            if (@available(iOS 11.0, *)) scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+            
+            scrollView;
+        });
+    }
+    return _scrollView;
+}
+
+- (UIImageView *)imageView {
+    if (!_imageView) {
+        _imageView = ({
+            CGFloat width = self.frame.size.width;
+            CGFloat height = self.frame.size.height;
+            CGFloat maxW = width;
+            CGFloat maxH = height;
+            CGFloat whScale = self.resizeImage.size.width / self.resizeImage.size.height;
+            CGFloat w = maxW;
+            CGFloat h = w / whScale;
+            if (h > maxH) {
+                h = maxH;
+                w = h * whScale;
+            }
+            UIImageView *imageView = [[UIImageView alloc] initWithImage:self.resizeImage];
+            imageView.frame = CGRectMake(0, 0, w, h);
+            imageView.userInteractionEnabled = YES;
+            
+            imageView;
+        });
+    }
+    return _imageView;
+}
+
+- (UIView *)shadowView {
+    if (!_shadowView) {
+        _shadowView = [[UIView alloc] init];
+        _shadowView.userInteractionEnabled = NO;
+        _shadowView.layer.shadowOffset = CGSizeMake(0,0);
+        _shadowView.layer.shadowOpacity = 1;
+        _shadowView.layer.shadowRadius = 2;
+        _shadowView.layer.borderWidth = 3;
+    }
+    return _shadowView;
+}
+
 - (void)setBgColor:(UIColor *)bgColor {
     if (bgColor == [UIColor clearColor]) bgColor = [UIColor blackColor];
     self.backgroundColor = bgColor;
@@ -36,6 +100,7 @@
 }
 
 - (void)setResizeImage:(UIImage *)resizeImage {
+    _resizeImage = resizeImage;
     self.imageView.image = resizeImage;
     [self updateSubviewLayouts];
 }
@@ -53,10 +118,6 @@
 
 - (UIColor *)strokeColor {
     return _frameView.strokeColor;
-}
-
-- (UIImage *)resizeImage {
-    return _imageView.image;
 }
 
 - (CGFloat)resizeWHScale {
@@ -77,6 +138,7 @@
                                                                              frame:configure.viewFrame
                                                                          fillColor:configure.fillColor
                                                                        strokeColor:configure.strokeColor
+                                                                       borderColor:configure.borderColor
                                                                      resizeWHScale:configure.resizeWHScale];
     return imageresizerView;
 }
@@ -85,16 +147,30 @@
                               frame:(CGRect)frame
                           fillColor:(UIColor *)fillColor
                         strokeColor:(UIColor *)strokeColor
+                        borderColor:(UIColor *)borderColor
                       resizeWHScale:(CGFloat)resizeWHScale {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = fillColor;
         CGFloat width = self.bounds.size.width;
         CGFloat height = self.bounds.size.height;
         _contentSize = CGSizeMake(width, height);
         _maskRect = CGRectZero;
-        [self setupBase];
-        [self setupScorllView];
-        [self setupImageViewWithImage:resizeImage];
+        _resizeImage = resizeImage;
+        self.clipsToBounds = YES;
+        self.autoresizingMask = UIViewAutoresizingNone;
+        self.allDirections = [@[@(LGImageresizerVerticalUpDirection),
+                                @(LGImageresizerHorizontalLeftDirection),
+                                @(LGImageresizerVerticalDownDirection),
+                                @(LGImageresizerHorizontalRightDirection)] mutableCopy];
+
+        [self addSubview:self.scrollView];
+        [self.scrollView addSubview:self.imageView];
+        
+        CGFloat verticalInset = (self.scrollView.bounds.size.height - self.imageView.frame.size.height) * 0.5;
+        CGFloat horizontalInset = (self.scrollView.bounds.size.width - self.imageView.frame.size.width) * 0.5;
+        self.scrollView.contentSize = self.imageView.bounds.size;
+        self.scrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
+        self.scrollView.contentOffset = CGPointMake(-horizontalInset, -verticalInset);
+        
         [self setupFrameViewWithFillColor:fillColor
                               strokeColor:strokeColor
                             resizeWHScale:resizeWHScale];
@@ -106,63 +182,12 @@
         shapeLayer.fillColor = fillColor.CGColor;
         [self.layer addSublayer:shapeLayer];
         self.bgLayer = shapeLayer;
+        
+        [self addSubview:self.shadowView];
+        self.shadowView.layer.shadowColor = borderColor.CGColor;
+        self.shadowView.layer.borderColor = borderColor.CGColor;
     }
     return self;
-}
-
-- (void)setupBase {
-    self.clipsToBounds = YES;
-    self.autoresizingMask = UIViewAutoresizingNone;
-    self.allDirections = [@[@(LGImageresizerVerticalUpDirection),
-                            @(LGImageresizerHorizontalLeftDirection),
-                            @(LGImageresizerVerticalDownDirection),
-                            @(LGImageresizerHorizontalRightDirection)] mutableCopy];
-}
-
-- (void)setupScorllView {
-    CGFloat h = _contentSize.height;
-    CGFloat w = h * h / _contentSize.width;
-    CGFloat x = (self.bounds.size.width - w) * 0.5;
-    CGFloat y = 0;
-    UIScrollView *scrollView = [[UIScrollView alloc] init];
-    scrollView.frame = CGRectMake(x, y, w, h);
-    scrollView.delegate = self;
-    scrollView.minimumZoomScale = 1.0;
-    scrollView.maximumZoomScale = MAXFLOAT;
-    scrollView.alwaysBounceVertical = YES;
-    scrollView.alwaysBounceHorizontal = YES;
-    scrollView.showsVerticalScrollIndicator = NO;
-    scrollView.showsHorizontalScrollIndicator = NO;
-    scrollView.autoresizingMask = UIViewAutoresizingNone;
-    scrollView.clipsToBounds = NO;
-    if (@available(iOS 11.0, *)) scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
-    [self addSubview:scrollView];
-    self.scrollView = scrollView;
-}
-
-- (void)setupImageViewWithImage:(UIImage *)image {
-    CGFloat width = self.frame.size.width;
-    CGFloat height = self.frame.size.height;
-    CGFloat maxW = width;
-    CGFloat maxH = height;
-    CGFloat whScale = image.size.width / image.size.height;
-    CGFloat w = maxW;
-    CGFloat h = w / whScale;
-    if (h > maxH) {
-        h = maxH;
-        w = h * whScale;
-    }
-    UIImageView *imageView = [[UIImageView alloc] initWithImage:image];
-    imageView.frame = CGRectMake(0, 0, w, h);
-    imageView.userInteractionEnabled = YES;
-    [self.scrollView addSubview:imageView];
-    self.imageView = imageView;
-    
-    CGFloat verticalInset = (self.scrollView.bounds.size.height - h) * 0.5;
-    CGFloat horizontalInset = (self.scrollView.bounds.size.width - w) * 0.5;
-    self.scrollView.contentSize = imageView.bounds.size;
-    self.scrollView.contentInset = UIEdgeInsetsMake(verticalInset, horizontalInset, verticalInset, horizontalInset);
-    self.scrollView.contentOffset = CGPointMake(-horizontalInset, -verticalInset);
 }
 
 - (void)setupFrameViewWithFillColor:(UIColor *)fillColor
@@ -176,13 +201,33 @@
                                      resizeWHScale:resizeWHScale
                                         scrollView:self.scrollView
                                          imageView:self.imageView];
+    __weak typeof(self)weakSelf = self;
+    frameView.imageresizerFrameChange = ^(CGRect imageresizerFrame) {
+        [weakSelf imageresizerFrameChange:imageresizerFrame];
+    };
     [self addSubview:frameView];
     self.frameView = frameView;
 }
 
+#pragma mark - 更新遮罩层
+- (void)imageresizerFrameChange:(CGRect)imageresizerFrame {
+    CGRect maskRect = [self convertRect:imageresizerFrame fromView:self.frameView];
+    self.shadowView.frame = maskRect;
+    UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
+    UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];
+    [bgPath appendPath:framePath];
+    
+    [CATransaction begin];
+    [CATransaction setDisableActions:YES];
+    self.bgLayer.path = bgPath.CGPath;
+    [CATransaction commit];
+    [CATransaction setCompletionBlock:^{
+
+    }];
+}
+
 #pragma mark - 更新布局
 - (void)updateSubviewLayouts {
-    [self setupBgLayerPathDismiss];
     self.directionIndex = 0;
     self.scrollView.layer.transform = CATransform3DIdentity;
     self.scrollView.minimumZoomScale = 1.0;
@@ -209,7 +254,6 @@
 
 #pragma mark - 重置
 - (void)recovery {
-    [self setupBgLayerPathDismiss];
     self.directionIndex = 0;
     CGFloat x = (_contentSize.width - self.scrollView.bounds.size.width) * 0.5;
     CGFloat y = (_contentSize.height - self.scrollView.bounds.size.height) * 0.5;
@@ -217,8 +261,7 @@
     frame.origin.x = x;
     frame.origin.y = y;
     
-    // 做3d旋转时会遮盖住上层的控件，设置为-400即可
-    self.layer.zPosition = -400;
+    self.layer.zPosition = -400;    // 做3d旋转时会遮盖住上层的控件，设置为负数
     NSTimeInterval duration = 0.25;
     [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
         
@@ -238,40 +281,35 @@
 
 #pragma mark - 旋转
 - (void)rotation {
-    CGRect maskRect = [self convertRect:self.frameView.imageresizerFrame fromView:self.frameView];
-    NSLog(@"maskRect=%@",[NSValue valueWithCGRect:maskRect]);
+    self.directionIndex += 1;
+    if (self.directionIndex > self.allDirections.count - 1) self.directionIndex = 0;
     
-    [self setupBgLayerPathShowWithRect:maskRect completion:^{
-        self.directionIndex += 1;
-        if (self.directionIndex > self.allDirections.count - 1) self.directionIndex = 0;
-        
-        LGImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
-        
-        CGFloat scale = 1;
-        if (direction == LGImageresizerHorizontalLeftDirection ||
-            direction == LGImageresizerHorizontalRightDirection) {
-            scale = self.frame.size.width / self.scrollView.bounds.size.height;
-        } else {
-            scale = self.scrollView.bounds.size.height / self.frame.size.width;
-        }
-        
-        CGFloat angle = (self.isClockwiseRotation ? 1.0 : -1.0) * M_PI * 0.5;
-        
-        CATransform3D svTransform = self.scrollView.layer.transform;
-        svTransform = CATransform3DScale(svTransform, scale, scale, 1);
-        svTransform = CATransform3DRotate(svTransform, angle, 0, 0, 1);
-        
-        CATransform3D fvTransform = self.frameView.layer.transform;
-        fvTransform = CATransform3DScale(fvTransform, scale, scale, 1);
-        fvTransform = CATransform3DRotate(fvTransform, angle, 0, 0, 1);
-        
-        NSTimeInterval duration = 0.23;
-        [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
-            self.scrollView.layer.transform = svTransform;
-            self.frameView.layer.transform = fvTransform;
-            [self.frameView rotationWithDirection:direction rotationDuration:duration];
-        } completion:nil];
-    }];
+    LGImageresizerRotationDirection direction = [self.allDirections[self.directionIndex] integerValue];
+    
+    CGFloat scale = 1;
+    if (direction == LGImageresizerHorizontalLeftDirection ||
+        direction == LGImageresizerHorizontalRightDirection) {
+        scale = self.frame.size.width / self.scrollView.bounds.size.height;
+    } else {
+        scale = self.scrollView.bounds.size.height / self.frame.size.width;
+    }
+    
+    CGFloat angle = (self.isClockwiseRotation ? 1.0 : -1.0) * M_PI * 0.5;
+    
+    CATransform3D svTransform = self.scrollView.layer.transform;
+    svTransform = CATransform3DScale(svTransform, scale, scale, 1);
+    svTransform = CATransform3DRotate(svTransform, angle, 0, 0, 1);
+    
+    CATransform3D fvTransform = self.frameView.layer.transform;
+    fvTransform = CATransform3DScale(fvTransform, scale, scale, 1);
+    fvTransform = CATransform3DRotate(fvTransform, angle, 0, 0, 1);
+    
+    NSTimeInterval duration = 0.23;
+    [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
+        self.scrollView.layer.transform = svTransform;
+        self.frameView.layer.transform = fvTransform;
+        [self.frameView rotationWithDirection:direction rotationDuration:duration];
+    } completion:nil];
 }
 
 #pragma mark - 修改比例
@@ -279,7 +317,6 @@
     [self setResizeWHScale:resizeWHScale animated:NO];
 }
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
-    [self setupBgLayerPathDismiss];
     [self.frameView setResizeWHScale:resizeWHScale animated:isAnimated];
 }
 
@@ -303,36 +340,6 @@
 #pragma mark - <UIScrollViewDelegate>
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     return self.imageView;
-}
-
-- (void)setupBgLayerPathDismiss {
-    self.bgLayer.hidden = YES;
-}
-
-- (void)setupBgLayerPathShowWithRect:(CGRect)maskRect completion: (void (^)(void))completion {
-    self.bgLayer.hidden = NO;
-    if (fabs(maskRect.origin.x - self.maskRect.origin.x) < 1 &&
-        fabs(maskRect.origin.y - self.maskRect.origin.y) < 1 &&
-        fabs(maskRect.size.width - self.maskRect.size.width) < 1 &&
-        fabs(maskRect.size.height - self.maskRect.size.height) < 1) {
-        !completion ? :completion();
-    }
-    else {
-        UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
-        UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];
-        [bgPath appendPath:framePath];
-        
-        [CATransaction begin];
-        [CATransaction setDisableActions:YES];
-        self.bgLayer.path = bgPath.CGPath;
-        [CATransaction commit];
-        [CATransaction setCompletionBlock:^{
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.15 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                !completion ? :completion();
-            });
-        }];
-    }
-    self.maskRect = maskRect;
 }
 
 @end

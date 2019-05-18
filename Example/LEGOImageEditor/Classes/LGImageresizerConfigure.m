@@ -14,8 +14,9 @@
     LGImageresizerConfigure *configure = [[self alloc] init];
     configure.resizeImage = resizeImage;
     configure.viewFrame = CGRectMake(50, 50, [UIScreen mainScreen].bounds.size.width - 100, [UIScreen mainScreen].bounds.size.height - 200);
-    configure.strokeColor = [UIColor whiteColor];
-    configure.fillColor = [UIColor colorWithWhite:0 alpha:1];
+    configure.strokeColor = [UIColor colorWithWhite:1 alpha:0.3];
+    configure.borderColor = [UIColor colorWithWhite:1 alpha:0.2];
+    configure.fillColor = [UIColor colorWithWhite:0 alpha:0.5];
     configure.resizeWHScale = 0;
     !make ? : make(configure);
     return configure;

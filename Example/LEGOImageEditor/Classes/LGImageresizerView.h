@@ -24,12 +24,13 @@ NS_ASSUME_NONNULL_BEGIN
                               frame:(CGRect)frame
                           fillColor:(UIColor *)fillColor
                         strokeColor:(UIColor *)strokeColor
+                        borderColor:(UIColor *)borderColor
                       resizeWHScale:(CGFloat)resizeWHScale;
 
-@property (nonatomic, weak) UIScrollView *scrollView;
+@property (nonatomic, strong) UIScrollView *scrollView;
 
 /** 裁剪的图片 */
-@property (nonatomic) UIImage *resizeImage;
+@property (nonatomic, strong) UIImage *resizeImage;
 
 /** 裁剪线颜色 */
 @property (nonatomic) UIColor *strokeColor;
@@ -74,7 +75,7 @@ NS_ASSUME_NONNULL_BEGIN
  @method
  @brief 压缩尺寸裁剪
  @param complete --- 裁剪完成的回调
- @param referenceWidth --- 裁剪的图片的参照宽度，例如设置为375，如果裁剪区域为图片宽度的一半，则裁剪的图片宽度为187.5，而高度则根据宽高比得出，最大和最小不超过原图和imageView两者的宽度
+ @param referenceWidth --- 裁剪的图片的参照宽度，例如设置为2000，则宽度固定为2000，高度按比例适配
  @discussion 裁剪过程在子线程，回调已切回到主线程，可调用该方法前加上状态提示
  */
 - (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete referenceWidth:(CGFloat)referenceWidth;

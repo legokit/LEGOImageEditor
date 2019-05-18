@@ -9,12 +9,9 @@
 #import "LGImageresizerFrameView.h"
 #import "UIImage+LGExtension.h"
 
-/** keypath */
-#define aKeyPath(objc, keyPath) @(((void)objc.keyPath, #keyPath))
-
-typedef NS_ENUM(NSUInteger, JPLinePosition) {
-    JPHorizontalLine,
-    JPVerticalLine
+typedef NS_ENUM(NSUInteger, LGLinePosition) {
+    LGHorizontalLine,
+    LGVerticalLine
 };
 
 @interface LGImageresizerFrameView ()
@@ -67,6 +64,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
 
 - (void)setImageresizerFrame:(CGRect)imageresizerFrame {
     _imageresizerFrame = imageresizerFrame;
+    !self.imageresizerFrameChange ? :self.imageresizerFrameChange(imageresizerFrame);
 }
 
 - (void)setResizeWHScale:(CGFloat)resizeWHScale {
@@ -197,16 +195,16 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
         _isCanRotation = YES;
         _isCanResizeWHScale = YES;
         
-        self.bgLayer = [self createShapeLayer:0];
+//        self.bgLayer = [self createShapeLayer:0];  将遮罩层放在父view
         
         self.lines = [[NSMutableArray alloc] init];
         NSMutableArray *horLines = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             CAShapeLayer *line = [self createShapeLayer:1];
             [horLines addObject:line];
         }
         NSMutableArray *verLines = [[NSMutableArray alloc] init];
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < 2; i++) {
             CAShapeLayer *line = [self createShapeLayer:1];
             [verLines addObject:line];
         }
@@ -394,15 +392,11 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     CGFloat oneThirdW = imageresizerW / 3.0;
     CGFloat oneThirdH = imageresizerH / 3.0;
     
-    UIBezierPath *horLinePath0 = [self linePathWithLinePosition:JPHorizontalLine location:CGPointMake(imageresizerX, imageresizerY) length:imageresizerW];
-    UIBezierPath *horLinePath1 = [self linePathWithLinePosition:JPHorizontalLine location:CGPointMake(imageresizerX, imageresizerY + oneThirdH) length:imageresizerW];
-    UIBezierPath *horLinePath2 = [self linePathWithLinePosition:JPHorizontalLine location:CGPointMake(imageresizerX, imageresizerY + oneThirdH * 2) length:imageresizerW];
-    UIBezierPath *horLinePath3 = [self linePathWithLinePosition:JPHorizontalLine location:CGPointMake(imageresizerX, imageresizerY + oneThirdH * 3) length:imageresizerW];
+    UIBezierPath *horLinePath1 = [self linePathWithLinePosition:LGHorizontalLine location:CGPointMake(imageresizerX + 3, imageresizerY + oneThirdH) length:imageresizerW - 6];
+    UIBezierPath *horLinePath2 = [self linePathWithLinePosition:LGHorizontalLine location:CGPointMake(imageresizerX + 3, imageresizerY + oneThirdH * 2) length:imageresizerW - 6];
     
-    UIBezierPath *verLinePath0 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX, imageresizerY) length:imageresizerH];
-    UIBezierPath *verLinePath1 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX + oneThirdW, imageresizerY) length:imageresizerH];
-    UIBezierPath *verLinePath2 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX + oneThirdW * 2, imageresizerY) length:imageresizerH];
-    UIBezierPath *verLinePath3 = [self linePathWithLinePosition:JPVerticalLine location:CGPointMake(imageresizerX + oneThirdW * 3, imageresizerY) length:imageresizerH];
+    UIBezierPath *verLinePath1 = [self linePathWithLinePosition:LGVerticalLine location:CGPointMake(imageresizerX + oneThirdW, imageresizerY + 3) length:imageresizerH - 6];
+    UIBezierPath *verLinePath2 = [self linePathWithLinePosition:LGVerticalLine location:CGPointMake(imageresizerX + oneThirdW * 2, imageresizerY + 3) length:imageresizerH - 6];
     
     // 遮罩部分延伸放大，避免旋转出现页面漏出
     UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:CGRectMake(self.bounds.origin.x - 500, self.bounds.origin.y - 500, self.bounds.size.width + 1000, self.bounds.size.height + 1000)];
@@ -412,31 +406,27 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     [CATransaction begin];
     [CATransaction setDisableActions:YES];
     
-    self.lines.firstObject[0].path = horLinePath0.CGPath;
-    self.lines.firstObject[1].path = horLinePath1.CGPath;
-    self.lines.firstObject[2].path = horLinePath2.CGPath;
-    self.lines.firstObject[3].path = horLinePath3.CGPath;
+    self.lines.firstObject[0].path = horLinePath1.CGPath;
+    self.lines.firstObject[1].path = horLinePath2.CGPath;
     
-    self.lines.lastObject[0].path = verLinePath0.CGPath;
-    self.lines.lastObject[1].path = verLinePath1.CGPath;
-    self.lines.lastObject[2].path = verLinePath2.CGPath;
-    self.lines.lastObject[3].path = verLinePath3.CGPath;
+    self.lines.lastObject[0].path = verLinePath1.CGPath;
+    self.lines.lastObject[1].path = verLinePath2.CGPath;
     
     self.bgLayer.path = bgPath.CGPath;
     
     [CATransaction commit];
 }
 
-- (UIBezierPath *)linePathWithLinePosition:(JPLinePosition)linePosition location:(CGPoint)location length:(CGFloat)length {
+- (UIBezierPath *)linePathWithLinePosition:(LGLinePosition)linePosition location:(CGPoint)location length:(CGFloat)length {
     UIBezierPath *path = [UIBezierPath bezierPath];
     CGPoint point = CGPointZero;
     switch (linePosition) {
-        case JPHorizontalLine:
+        case LGHorizontalLine:
         {
             point = CGPointMake(location.x + length, location.y);
             break;
         }
-        case JPVerticalLine:
+        case LGVerticalLine:
         {
             point = CGPointMake(location.x, location.y + length);
             break;
@@ -452,10 +442,10 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     if (!complete) return;
     
     /**
-     * UIImageOrientationUp,            // default orientation
-     * UIImageOrientationDown,          // 180 deg rotation
-     * UIImageOrientationLeft,          // 90 deg CCW
-     * UIImageOrientationRight,         // 90 deg CW
+     * UIImageOrientationUp,
+     * UIImageOrientationDown,
+     * UIImageOrientationLeft,
+     * UIImageOrientationRight,
      */
     
     UIImageOrientation orientation;
@@ -489,12 +479,7 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
     
     CGFloat deviceScale = [UIScreen mainScreen].scale;
     
-    if (referenceWidth > 0) {
-        CGFloat maxWidth = MAX(imageWidth, self.imageView.bounds.size.width);
-        CGFloat minWidth = MIN(imageWidth, self.imageView.bounds.size.width);
-        if (referenceWidth > maxWidth) referenceWidth = maxWidth;
-        if (referenceWidth < minWidth) referenceWidth = minWidth;
-    } else {
+    if (referenceWidth <= 0) {
         referenceWidth = self.imageView.bounds.size.width;
     }
     
@@ -548,18 +533,11 @@ typedef NS_ENUM(NSUInteger, JPLinePosition) {
             return;
         }
         
-        // 有小数的情况下，边界会多出白线，需要把小数点去掉
-        CGFloat cropScale = imageWidth / referenceWidth;
-        CGSize cropSize = CGSizeMake(floor(resizeImg.size.width / cropScale), floor(resizeImg.size.height / cropScale));
+//        CGFloat cropScale = imageWidth / referenceWidth;
+//        CGSize cropSize = CGSizeMake(floor(resizeImg.size.width / cropScale), floor(resizeImg.size.height / cropScale));
+        CGSize cropSize = CGSizeMake(floor(referenceWidth), floor(referenceWidth / resizeImg.size.width * resizeImg.size.height));
         if (cropSize.width < 1) cropSize.width = 1;
         if (cropSize.height < 1) cropSize.height = 1;
-        
-        /**
-         * 参考：http://www.jb51.net/article/81318.htm
-         * 这里要注意一点CGContextDrawImage这个函数的坐标系和UIKIt的坐标系上下颠倒，需对坐标系处理如下：
-         - 1.CGContextTranslateCTM(context, 0, cropSize.height);
-         - 2.CGContextScaleCTM(context, 1, -1);
-         */
         
         UIGraphicsBeginImageContextWithOptions(cropSize, 0, deviceScale);
         CGContextRef context = UIGraphicsGetCurrentContext();

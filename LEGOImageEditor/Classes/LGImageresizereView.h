@@ -10,7 +10,7 @@
 #import "LGImageresizerConfigure.h"
 NS_ASSUME_NONNULL_BEGIN
 
-@interface LGImageresizerView : UIView
+@interface LGImageresizereView : UIView
 /*!
  @method
  @brief 类方法（推荐）
@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 /** 裁剪线颜色 */
 @property (nonatomic) UIColor *strokeColor;
 
-/** 裁剪宽高比（0则为任意比例，可控8个方向，固定比例为4个方向） */
+/** 裁剪宽高比 */
 @property (nonatomic) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
 

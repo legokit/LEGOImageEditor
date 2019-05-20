@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "summary": "A short description of LEGOImageEditor.",
   "description": "TODO: Add long description of the pod here.",
-  "homepage": "https://github.com/564008993@qq.com/LEGOImageEditor",
+  "homepage": "https://github.com/legokit/LEGOImageEditor",
   "license": {
     "type": "MIT",
     "file": "LICENSE"
@@ -12,7 +12,7 @@
     "564008993@qq.com": "564008993@qq.com"
   },
   "source": {
-    "git": "https://github.com/564008993@qq.com/LEGOImageEditor.git",
+    "git": "https://github.com/legokit/LEGOImageEditor.git",
     "tag": "0.1.0"
   },
   "platforms": {

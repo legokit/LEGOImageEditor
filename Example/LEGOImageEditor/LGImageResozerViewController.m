@@ -9,11 +9,11 @@
 #import "LGImageResozerViewController.h"
 #import <Masonry/Masonry.h>
 #import "LGImageresizerConfigure.h"
-#import "LGImageresizerView.h"
+#import "LGImageresizereView.h"
 #import "LGIamgeShowViewController.h"
 
 @interface LGImageResozerViewController ()
-@property (nonatomic, strong) LGImageresizerView *imageresizerView;
+@property (nonatomic, strong) LGImageresizereView *imageresizerView;
 @property (nonatomic, assign) BOOL is2_3;
 
 @end
@@ -31,7 +31,7 @@
     self.view.backgroundColor = [UIColor colorWithWhite:0 alpha:1];
     
     
-    LGImageresizerView *imageresizerView = [LGImageresizerView imageresizerViewWithConfigure:configure1];
+    LGImageresizereView *imageresizerView = [LGImageresizereView imageresizerViewWithConfigure:configure1];
     
     CGFloat resizeWHScale;
     if (self.image.size.width > self.image.size.height) {

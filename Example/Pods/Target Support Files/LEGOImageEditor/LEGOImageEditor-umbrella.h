@@ -11,9 +11,9 @@
 #endif
 
 #import "LGImageresizerConfigure.h"
+#import "LGImageresizereView.h"
 #import "LGImageresizerFrameView.h"
 #import "LGImageresizerTypedef.h"
-#import "LGImageresizerView.h"
 #import "UIImage+LGExtension.h"
 
 FOUNDATION_EXPORT double LEGOImageEditorVersionNumber;

@@ -7,10 +7,10 @@
 //  Copyright © 2019年 564008993@qq.com. All rights reserved.
 //
 
-#import "LGImageresizerView.h"
+#import "LGImageresizereView.h"
 #import "LGImageresizerFrameView.h"
 
-@interface LGImageresizerView () <UIScrollViewDelegate>
+@interface LGImageresizereView () <UIScrollViewDelegate>
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) LGImageresizerFrameView *frameView;
 @property (nonatomic, strong) NSMutableArray *allDirections;
@@ -20,7 +20,7 @@
 @property (nonatomic, assign) CGRect maskRect;
 @end
 
-@implementation LGImageresizerView {
+@implementation LGImageresizereView {
     CGSize _contentSize;
     UIViewAnimationOptions _animationOption;
 }
@@ -134,7 +134,7 @@
 
 #pragma mark - init
 + (instancetype)imageresizerViewWithConfigure:(LGImageresizerConfigure *)configure {
-    LGImageresizerView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage
+    LGImageresizereView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage
                                                                              frame:configure.viewFrame
                                                                          fillColor:configure.fillColor
                                                                        strokeColor:configure.strokeColor

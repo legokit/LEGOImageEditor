@@ -18,5 +18,10 @@
   "platforms": {
     "ios": "8.0"
   },
-  "source_files": "LEGOImageEditor/Classes/**/*"
+  "source_files": "LEGOImageEditor/Classes/**/*",
+  "dependencies": {
+    "Masonry": [
+
+    ]
+  }
 }

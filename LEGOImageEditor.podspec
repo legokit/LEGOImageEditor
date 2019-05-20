@@ -31,7 +31,9 @@ TODO: Add long description of the pod here.
   s.ios.deployment_target = '8.0'
 
   s.source_files = 'LEGOImageEditor/Classes/**/*'
-  
+
+  s.dependency 'Masonry'
+
   # s.resource_bundles = {
   #   'LEGOImageEditor' => ['LEGOImageEditor/Assets/*.png']
   # }

@@ -24,10 +24,6 @@
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		CB6437F4A8EE7979511FCFC5 /* Pods_LEGOImageEditor_Tests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A590D91EF38B37B63BFF68AB /* Pods_LEGOImageEditor_Tests.framework */; };
-		E85DB153228E60C200D6125D /* LGImageresizerFrameView.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB14D228E60C100D6125D /* LGImageresizerFrameView.m */; };
-		E85DB154228E60C200D6125D /* UIImage+LGExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB14F228E60C100D6125D /* UIImage+LGExtension.m */; };
-		E85DB155228E60C200D6125D /* LGImageresizerView.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB151228E60C100D6125D /* LGImageresizerView.m */; };
-		E85DB156228E60C200D6125D /* LGImageresizerConfigure.m in Sources */ = {isa = PBXBuildFile; fileRef = E85DB152228E60C100D6125D /* LGImageresizerConfigure.m */; };
 		E860B37A228964EF00853A78 /* LGImagePickerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B379228964EF00853A78 /* LGImagePickerViewController.m */; };
 		E860B37D22896B3D00853A78 /* LGImagePickerAlbumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B37C22896B3D00853A78 /* LGImagePickerAlbumModel.m */; };
 		E860B38022896FBD00853A78 /* LGImagePickerAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = E860B37F22896FBD00853A78 /* LGImagePickerAlbumCell.m */; };
@@ -76,15 +72,6 @@
 		CD60E080B89BFC9CE434E73F /* Pods-LEGOImageEditor_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-LEGOImageEditor_Example.debug.xcconfig"; path = "Target Support Files/Pods-LEGOImageEditor_Example/Pods-LEGOImageEditor_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		DF74E82FE869F745C91923A8 /* Pods_LEGOImageEditor_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_LEGOImageEditor_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B32053BEA012EB3D6115A2 /* LEGOImageEditor.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LEGOImageEditor.podspec; path = ../LEGOImageEditor.podspec; sourceTree = "<group>"; };
-		E85DB14A228E60C100D6125D /* UIImage+LGExtension.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+LGExtension.h"; sourceTree = "<group>"; };
-		E85DB14B228E60C100D6125D /* LGImageresizerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGImageresizerView.h; sourceTree = "<group>"; };
-		E85DB14C228E60C100D6125D /* LGImageresizerTypedef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGImageresizerTypedef.h; sourceTree = "<group>"; };
-		E85DB14D228E60C100D6125D /* LGImageresizerFrameView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGImageresizerFrameView.m; sourceTree = "<group>"; };
-		E85DB14E228E60C100D6125D /* LGImageresizerConfigure.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGImageresizerConfigure.h; sourceTree = "<group>"; };
-		E85DB14F228E60C100D6125D /* UIImage+LGExtension.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+LGExtension.m"; sourceTree = "<group>"; };
-		E85DB150228E60C100D6125D /* LGImageresizerFrameView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LGImageresizerFrameView.h; sourceTree = "<group>"; };
-		E85DB151228E60C100D6125D /* LGImageresizerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGImageresizerView.m; sourceTree = "<group>"; };
-		E85DB152228E60C100D6125D /* LGImageresizerConfigure.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LGImageresizerConfigure.m; sourceTree = "<group>"; };
 		E860B378228964EF00853A78 /* LGImagePickerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImagePickerViewController.h; sourceTree = "<group>"; };
 		E860B379228964EF00853A78 /* LGImagePickerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = LGImagePickerViewController.m; sourceTree = "<group>"; };
 		E860B37B22896B3D00853A78 /* LGImagePickerAlbumModel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LGImagePickerAlbumModel.h; sourceTree = "<group>"; };
@@ -175,7 +162,6 @@
 				E8B631D6228BE88700EF77ED /* LGImageResozerViewController.m */,
 				E8B631E8228BEDA300EF77ED /* LGIamgeShowViewController.h */,
 				E8B631E9228BEDA300EF77ED /* LGIamgeShowViewController.m */,
-				E85DB149228E60C100D6125D /* Classes */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -235,22 +221,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		E85DB149228E60C100D6125D /* Classes */ = {
-			isa = PBXGroup;
-			children = (
-				E85DB14E228E60C100D6125D /* LGImageresizerConfigure.h */,
-				E85DB152228E60C100D6125D /* LGImageresizerConfigure.m */,
-				E85DB14B228E60C100D6125D /* LGImageresizerView.h */,
-				E85DB151228E60C100D6125D /* LGImageresizerView.m */,
-				E85DB150228E60C100D6125D /* LGImageresizerFrameView.h */,
-				E85DB14D228E60C100D6125D /* LGImageresizerFrameView.m */,
-				E85DB14C228E60C100D6125D /* LGImageresizerTypedef.h */,
-				E85DB14A228E60C100D6125D /* UIImage+LGExtension.h */,
-				E85DB14F228E60C100D6125D /* UIImage+LGExtension.m */,
-			);
-			path = Classes;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -262,7 +232,7 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				1B51D59D04AFC46EAD001019 /* [CP] Embed Pods Frameworks */,
+				42292B06607F292867176A6F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -375,7 +345,7 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		1B51D59D04AFC46EAD001019 /* [CP] Embed Pods Frameworks */ = {
+		42292B06607F292867176A6F /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -428,17 +398,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E85DB156228E60C200D6125D /* LGImageresizerConfigure.m in Sources */,
 				E860B38022896FBD00853A78 /* LGImagePickerAlbumCell.m in Sources */,
 				6003F59E195388D20070C39A /* LGAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* LGViewController.m in Sources */,
 				E8B631D7228BE88700EF77ED /* LGImageResozerViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				E860B37A228964EF00853A78 /* LGImagePickerViewController.m in Sources */,
-				E85DB154228E60C200D6125D /* UIImage+LGExtension.m in Sources */,
 				E8B631EA228BEDA300EF77ED /* LGIamgeShowViewController.m in Sources */,
-				E85DB153228E60C200D6125D /* LGImageresizerFrameView.m in Sources */,
-				E85DB155228E60C200D6125D /* LGImageresizerView.m in Sources */,
 				E860B37D22896B3D00853A78 /* LGImagePickerAlbumModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

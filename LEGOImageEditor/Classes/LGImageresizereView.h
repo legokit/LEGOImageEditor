@@ -45,6 +45,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 当前旋转的下标系数 */
 @property (nonatomic, assign) NSInteger directionIndex;
 
+/** 遮罩相对应imageresizerView的rect */
+@property (nonatomic, assign, readonly) CGRect maskRect;
+
 @property (nonatomic, assign, readonly) BOOL isCanRotation;
 
 @property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;

@@ -17,7 +17,6 @@
     configure.strokeColor = [UIColor colorWithWhite:1 alpha:0.3];
     configure.borderColor = [UIColor colorWithWhite:1 alpha:0.18];
     configure.fillColor = [UIColor colorWithWhite:0 alpha:0.5];
-    configure.resizeWHScale = 0;
     !make ? :make(configure);
     return configure;
 }

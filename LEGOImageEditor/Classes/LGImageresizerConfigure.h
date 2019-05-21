@@ -28,9 +28,6 @@ NS_ASSUME_NONNULL_BEGIN
 /** 边框颜色 */
 @property (nonatomic, strong) UIColor *borderColor;
 
-/** 裁剪宽高比 */
-@property (nonatomic, assign) CGFloat resizeWHScale;
-
 /** 是否顺时针旋转 */
 @property (nonatomic, assign) BOOL isClockwiseRotation;
 @end

@@ -139,7 +139,7 @@
                                                                          fillColor:configure.fillColor
                                                                        strokeColor:configure.strokeColor
                                                                        borderColor:configure.borderColor
-                                                                     resizeWHScale:configure.resizeWHScale];
+                                                                     resizeWHScale:0];
     return imageresizerView;
 }
 
@@ -212,6 +212,7 @@
 #pragma mark - 更新遮罩层
 - (void)imageresizerFrameChange:(CGRect)imageresizerFrame {
     CGRect maskRect = [self convertRect:imageresizerFrame fromView:self.frameView];
+    self.maskRect = maskRect;
     self.shadowView.frame = maskRect;
     UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
     UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];

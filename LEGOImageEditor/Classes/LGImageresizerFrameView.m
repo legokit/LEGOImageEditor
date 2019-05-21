@@ -477,8 +477,6 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
     
     CGRect cropFrame = [self convertRect:self.imageresizerFrame toView:self.imageView];
     
-    CGFloat deviceScale = [UIScreen mainScreen].scale;
-    
     if (referenceWidth <= 0) {
         referenceWidth = self.imageView.bounds.size.width;
     }
@@ -536,10 +534,10 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
 //        CGFloat cropScale = imageWidth / referenceWidth;
 //        CGSize cropSize = CGSizeMake(floor(resizeImg.size.width / cropScale), floor(resizeImg.size.height / cropScale));
         CGSize cropSize = CGSizeMake(floor(referenceWidth), floor(referenceWidth / resizeImg.size.width * resizeImg.size.height));
-        if (cropSize.width < 1) cropSize.width = 1;
-        if (cropSize.height < 1) cropSize.height = 1;
+        if (cropSize.width < 1) cropSize = CGSizeMake(1, cropSize.height);
+        if (cropSize.height < 1) cropSize = CGSizeMake(cropSize.width, 1);
         
-        UIGraphicsBeginImageContextWithOptions(cropSize, 0, deviceScale);
+        UIGraphicsBeginImageContextWithOptions(cropSize, 0, 1);
         CGContextRef context = UIGraphicsGetCurrentContext();
         CGContextTranslateCTM(context, 0, cropSize.height);
         CGContextScaleCTM(context, 1, -1);

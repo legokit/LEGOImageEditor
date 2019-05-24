@@ -52,6 +52,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
 
+/** 手势缩放比例发生改变 */ 
+@property (nonatomic, copy) void (^zoom)(CGFloat scale);
+
+
 /*!
  @method
  @brief 旋转图片

@@ -343,4 +343,8 @@
     return self.imageView;
 }
 
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view atScale:(CGFloat)scale {
+    !self.zoom ? :self.zoom(scale);
+}
+
 @end

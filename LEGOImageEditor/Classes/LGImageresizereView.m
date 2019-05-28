@@ -18,6 +18,9 @@
 @property (nonatomic, strong) CAShapeLayer *bgLayer;
 @property (nonatomic, strong) UIView *shadowView;
 @property (nonatomic, assign) CGRect maskRect;
+@property (nonatomic, strong) UIView *topView;
+@property (nonatomic, strong) UIView *bottomView;
+
 @end
 
 @implementation LGImageresizereView {
@@ -89,6 +92,20 @@
     return _shadowView;
 }
 
+- (UIView *)topView {
+    if (!_topView) {
+        _topView = [[UIView alloc] init];
+    }
+    return _topView;
+}
+
+- (UIView *)bottomView {
+    if (!_bottomView) {
+        _bottomView = [[UIView alloc] init];
+    }
+    return _bottomView;
+}
+
 - (void)setBgColor:(UIColor *)bgColor {
     if (bgColor == [UIColor clearColor]) bgColor = [UIColor blackColor];
     self.backgroundColor = bgColor;
@@ -135,11 +152,11 @@
 #pragma mark - init
 + (instancetype)imageresizerViewWithConfigure:(LGImageresizerConfigure *)configure {
     LGImageresizereView *imageresizerView = [[self.class alloc] initWithResizeImage:configure.resizeImage
-                                                                             frame:configure.viewFrame
-                                                                         fillColor:configure.fillColor
-                                                                       strokeColor:configure.strokeColor
-                                                                       borderColor:configure.borderColor
-                                                                     resizeWHScale:0];
+                                                                              frame:configure.viewFrame
+                                                                          fillColor:configure.fillColor
+                                                                        strokeColor:configure.strokeColor
+                                                                        borderColor:configure.borderColor
+                                                                      resizeWHScale:0];
     return imageresizerView;
 }
 
@@ -161,7 +178,7 @@
                                 @(LGImageresizerHorizontalLeftDirection),
                                 @(LGImageresizerVerticalDownDirection),
                                 @(LGImageresizerHorizontalRightDirection)] mutableCopy];
-
+        
         [self addSubview:self.scrollView];
         [self.scrollView addSubview:self.imageView];
         
@@ -175,17 +192,22 @@
                               strokeColor:strokeColor
                             resizeWHScale:resizeWHScale];
         
-        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
-        shapeLayer.frame = self.bounds;
-        shapeLayer.lineWidth = 0;
-        shapeLayer.fillRule = kCAFillRuleEvenOdd;
-        shapeLayer.fillColor = fillColor.CGColor;
-        [self.layer addSublayer:shapeLayer];
-        self.bgLayer = shapeLayer;
+        //        CAShapeLayer *shapeLayer = [CAShapeLayer layer];
+        //        shapeLayer.frame = self.bounds;
+        //        shapeLayer.lineWidth = 0;
+        //        shapeLayer.fillRule = kCAFillRuleEvenOdd;
+        //        shapeLayer.fillColor = fillColor.CGColor;
+        //        [self.layer addSublayer:shapeLayer];
+        //        self.bgLayer = shapeLayer;
         
         [self addSubview:self.shadowView];
         self.shadowView.layer.shadowColor = borderColor.CGColor;
         self.shadowView.layer.borderColor = borderColor.CGColor;
+        
+        [self addSubview:self.topView];
+        [self addSubview:self.bottomView];
+        self.topView.backgroundColor = fillColor;
+        self.bottomView.backgroundColor = fillColor;
     }
     return self;
 }
@@ -212,19 +234,26 @@
 #pragma mark - 更新遮罩层
 - (void)imageresizerFrameChange:(CGRect)imageresizerFrame {
     CGRect maskRect = [self convertRect:imageresizerFrame fromView:self.frameView];
-    self.maskRect = maskRect;
-    self.shadowView.frame = maskRect;
-    UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
-    UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];
-    [bgPath appendPath:framePath];
     
-    [CATransaction begin];
-    [CATransaction setDisableActions:YES];
-    self.bgLayer.path = bgPath.CGPath;
-    [CATransaction commit];
-    [CATransaction setCompletionBlock:^{
-
-    }];
+    //    UIBezierPath *bgPath = [UIBezierPath bezierPathWithRect:self.bounds];
+    //    UIBezierPath *framePath = [UIBezierPath bezierPathWithRect:maskRect];
+    //    [bgPath appendPath:framePath];
+    //
+    //    [CATransaction begin];
+    //    [CATransaction setDisableActions:YES];
+    //    self.bgLayer.path = bgPath.CGPath;
+    //    [CATransaction commit];
+    //    [CATransaction setCompletionBlock:^{
+    //
+    //    }];
+    
+    [UIView animateWithDuration:0.035 delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+        self.shadowView.frame = maskRect;
+        self.topView.frame = CGRectMake(0, 0, self.bounds.size.width, CGRectGetMinY(maskRect));
+        self.bottomView.frame = CGRectMake(0, CGRectGetMaxY(maskRect), self.bounds.size.width, self.bounds.size.height - CGRectGetMaxY(maskRect));
+    } completion:nil];
+    
+    self.maskRect = maskRect;
 }
 
 #pragma mark - 更新布局

@@ -17,6 +17,7 @@ LEGOImageEditor is available through [CocoaPods](https://cocoapods.org). To inst
 it, simply add the following line to your Podfile:
 
 ```ruby
+source 'https://github.com/legokit/Specs.git'
 pod 'LEGOImageEditor'
 ```
 ## Usage

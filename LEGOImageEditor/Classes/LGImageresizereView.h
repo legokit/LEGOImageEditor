@@ -35,6 +35,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 裁剪线颜色 */
 @property (nonatomic) UIColor *strokeColor;
 
+/** 最小缩放分辨率尺寸 */
+@property (nonatomic) CGFloat minZoomScale;
+
 /** 裁剪宽高比 */
 @property (nonatomic) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
@@ -52,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
 
-/** 手势缩放比例发生改变 */ 
+/** 手势缩放比例发生改变 */
 @property (nonatomic, copy) void (^zoom)(CGFloat scale);
 
 

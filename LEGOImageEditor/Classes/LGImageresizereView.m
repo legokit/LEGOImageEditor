@@ -20,7 +20,8 @@
 @property (nonatomic, assign) CGRect maskRect;
 @property (nonatomic, strong) UIView *topView;
 @property (nonatomic, strong) UIView *bottomView;
-
+@property (nonatomic, strong) UIView *leftView;
+@property (nonatomic, strong) UIView *rightView;
 @end
 
 @implementation LGImageresizereView {
@@ -104,6 +105,20 @@
         _bottomView = [[UIView alloc] init];
     }
     return _bottomView;
+}
+
+- (UIView *)leftView {
+    if (!_leftView) {
+        _leftView = [[UIView alloc] init];
+    }
+    return _leftView;
+}
+
+- (UIView *)rightView {
+    if (!_rightView) {
+        _rightView = [[UIView alloc] init];
+    }
+    return _rightView;
 }
 
 - (void)setBgColor:(UIColor *)bgColor {
@@ -206,8 +221,12 @@
         
         [self addSubview:self.topView];
         [self addSubview:self.bottomView];
+        [self addSubview:self.leftView];
+        [self addSubview:self.rightView];
         self.topView.backgroundColor = fillColor;
         self.bottomView.backgroundColor = fillColor;
+        self.leftView.backgroundColor = fillColor;
+        self.rightView.backgroundColor = fillColor;
     }
     return self;
 }
@@ -251,6 +270,8 @@
         self.shadowView.frame = maskRect;
         self.topView.frame = CGRectMake(0, 0, self.bounds.size.width, CGRectGetMinY(maskRect));
         self.bottomView.frame = CGRectMake(0, CGRectGetMaxY(maskRect), self.bounds.size.width, self.bounds.size.height - CGRectGetMaxY(maskRect));
+        self.leftView.frame = CGRectMake(0, 0, CGRectGetMinX(maskRect), self.bounds.size.height);
+        self.rightView.frame = CGRectMake(CGRectGetMaxX(maskRect), 0, self.bounds.size.width - CGRectGetMaxX(maskRect), self.bounds.size.height);
     } completion:nil];
     
     self.maskRect = maskRect;
@@ -335,11 +356,35 @@
     fvTransform = CATransform3DRotate(fvTransform, angle, 0, 0, 1);
     
     NSTimeInterval duration = 0.23;
+    self.scrollView.maximumZoomScale = MAXFLOAT;
     [UIView animateWithDuration:duration delay:0 options:_animationOption animations:^{
         self.scrollView.layer.transform = svTransform;
         self.frameView.layer.transform = fvTransform;
         [self.frameView rotationWithDirection:direction rotationDuration:duration];
-    } completion:nil];
+    } completion:^(BOOL finished) {
+        if (finished) {
+            [self setMaximumScalingRatio];
+        }
+    }];
+}
+
+- (void)setMinZoomScale:(CGFloat)minZoomScale {
+    _minZoomScale = minZoomScale;
+    self.frameView.minZoomScale = minZoomScale;
+    self.scrollView.maximumZoomScale = MAXFLOAT;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setMaximumScalingRatio];
+    });
+}
+
+- (void)setMaximumScalingRatio {
+    CGFloat maxZoomScale = [self.frameView getCurrMaxmumZoomScale];
+    if (maxZoomScale > self.scrollView.minimumZoomScale) {
+        self.scrollView.maximumZoomScale = maxZoomScale;
+    }
+    else {
+        self.scrollView.maximumZoomScale = MAXFLOAT;
+    }
 }
 
 #pragma mark - 修改比例
@@ -347,7 +392,11 @@
     [self setResizeWHScale:resizeWHScale animated:NO];
 }
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated {
+    self.scrollView.maximumZoomScale = MAXFLOAT;
     [self.frameView setResizeWHScale:resizeWHScale animated:isAnimated];
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self setMaximumScalingRatio];
+    });
 }
 
 #pragma mark - 截图
@@ -375,5 +424,7 @@
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view atScale:(CGFloat)scale {
     !self.zoom ? :self.zoom(scale);
 }
+
+
 
 @end

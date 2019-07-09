@@ -195,7 +195,7 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
         _isCanRotation = YES;
         _isCanResizeWHScale = YES;
         
-//        self.bgLayer = [self createShapeLayer:0];  将遮罩层放在父view
+        //        self.bgLayer = [self createShapeLayer:0];  将遮罩层放在父view
         
         self.lines = [[NSMutableArray alloc] init];
         NSMutableArray *horLines = [[NSMutableArray alloc] init];
@@ -496,27 +496,27 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
         CGRect cropRect = CGRectMake(orgX, orgY, width, height);
         
         if (orgX < 0) {
-            cropRect.origin.x = 0;
-            cropRect.size.width += -orgX;
+            cropRect = CGRectMake(0, cropRect.origin.y, cropRect.size.width - orgX, cropRect.size.height);
         }
         
         if (orgY < 0) {
-            cropRect.origin.y = 0;
-            cropRect.size.height += -orgY;
+            cropRect = CGRectMake(cropRect.origin.x, 0, cropRect.size.width, cropRect.size.height - orgY);
         }
         
         CGFloat cropMaxX = CGRectGetMaxX(cropRect);
         if (cropMaxX > imageWidth) {
             CGFloat diffW = cropMaxX - imageWidth;
-            cropRect.size.width -= diffW;
+            cropRect = CGRectMake(cropRect.origin.x, cropRect.origin.y, cropRect.size.width - diffW, cropRect.size.height);
         }
         
         CGFloat cropMaxY = CGRectGetMaxY(cropRect);
         if (cropMaxY > imageHeight) {
             CGFloat diffH = cropMaxY - imageHeight;
-            cropRect.size.height -= diffH;
+            cropRect = CGRectMake(cropRect.origin.x, cropRect.origin.y, cropRect.size.width, cropRect.size.height - diffH);
         }
         
+        //        如果w和h分别是图像的宽度和高度，则点（0,0）对应于图像数据的第一个像素；（w-1，h-1）是图像数据最后一行的最后一个像素。
+        cropRect = CGRectMake((int)cropRect.origin.x, (int)cropRect.origin.y, (int)cropRect.size.width, (int)cropRect.size.height);
         CGImageRef imgRef = CGImageCreateWithImageInRect(image.CGImage, cropRect);
         
         UIImage *resizeImg = [UIImage imageWithCGImage:imgRef];
@@ -524,16 +524,30 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
         
         CGImageRelease(imgRef);
         
+        CGSize cropSize = CGSizeZero;
+        
         if (isOriginImageSize) {
-            dispatch_async(dispatch_get_main_queue(), ^{
-                complete(resizeImg);
-            });
-            return;
+            if (resizeImg.size.width >= self.minZoomScale && resizeImg.size.height >= self.minZoomScale) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    complete(resizeImg);
+                });
+                return;
+            }
+            else {
+                if (resizeImg.size.width < self.minZoomScale) {
+                    cropSize = CGSizeMake(self.minZoomScale, self.minZoomScale / resizeImg.size.width * resizeImg.size.height);
+                }
+                if (resizeImg.size.height < self.minZoomScale) {
+                    cropSize = CGSizeMake(self.minZoomScale / resizeImg.size.height * resizeImg.size.width, self.minZoomScale);
+                }
+            }
+        }
+        else {
+            //        CGFloat cropScale = imageWidth / referenceWidth;
+            //        CGSize cropSize = CGSizeMake(floor(resizeImg.size.width / cropScale), floor(resizeImg.size.height / cropScale));
+            cropSize = CGSizeMake(floor(referenceWidth), floor(referenceWidth / resizeImg.size.width * resizeImg.size.height));
         }
         
-//        CGFloat cropScale = imageWidth / referenceWidth;
-//        CGSize cropSize = CGSizeMake(floor(resizeImg.size.width / cropScale), floor(resizeImg.size.height / cropScale));
-        CGSize cropSize = CGSizeMake(floor(referenceWidth), floor(referenceWidth / resizeImg.size.width * resizeImg.size.height));
         if (cropSize.width < 1) cropSize = CGSizeMake(1, cropSize.height);
         if (cropSize.height < 1) cropSize = CGSizeMake(cropSize.width, 1);
         
@@ -575,6 +589,53 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
     return NO;
 }
 
+- (CGFloat)getCurrMaxmumZoomScale {
+    if (!self.minZoomScale) {
+        return MAXFLOAT;
+    }
+    UIImage *image = self.imageView.image;
+    CGFloat imageScale = image.scale;
+    CGFloat imageWidth = image.size.width * imageScale;
+    CGFloat imageHeight = image.size.height * imageScale;
+    CGFloat scale = imageWidth / self.imageView.bounds.size.width;
+    
+    CGRect cropFrame = [self convertRect:self.imageresizerFrame toView:self.imageView];
+    // 宽高比不变，所以宽度高度的比例是一样
+    CGFloat orgX = cropFrame.origin.x * scale;
+    CGFloat orgY = cropFrame.origin.y * scale;
+    CGFloat width = cropFrame.size.width * scale;
+    CGFloat height = cropFrame.size.height * scale;
+    CGRect cropRect = CGRectMake(orgX, orgY, width, height);
+    
+    if (orgX < 0) {
+        cropRect.origin.x = 0;
+        cropRect.size.width += -orgX;
+    }
+    
+    if (orgY < 0) {
+        cropRect.origin.y = 0;
+        cropRect.size.height += -orgY;
+    }
+    
+    CGFloat cropMaxX = CGRectGetMaxX(cropRect);
+    if (cropMaxX > imageWidth) {
+        CGFloat diffW = cropMaxX - imageWidth;
+        cropRect.size.width -= diffW;
+    }
+    
+    CGFloat cropMaxY = CGRectGetMaxY(cropRect);
+    if (cropMaxY > imageHeight) {
+        CGFloat diffH = cropMaxY - imageHeight;
+        cropRect.size.height -= diffH;
+    }
+    
+    CGFloat short_w = cropRect.size.width;
+    if (cropRect.size.width > cropRect.size.height) {
+        short_w = cropRect.size.height;
+    }
+    CGFloat maxZoomScale = short_w / self.minZoomScale * self.scrollView.zoomScale;
+    return maxZoomScale;
+}
 
 @end
 

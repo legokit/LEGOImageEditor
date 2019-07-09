@@ -29,6 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) void (^imageresizerFrameChange)(CGRect imageresizerFrame);
 
+@property (nonatomic, assign) CGFloat minZoomScale;
+- (CGFloat)getCurrMaxmumZoomScale;
+
 @property (nonatomic, assign) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
 

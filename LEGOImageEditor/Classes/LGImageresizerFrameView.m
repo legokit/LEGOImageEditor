@@ -88,6 +88,13 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
     }
 }
 
+- (CGFloat)maxZoomScale {
+    if (!_maxZoomScale) {
+        _maxZoomScale = MAXFLOAT;
+    }
+    return _maxZoomScale;
+}
+
 - (CGRect)baseImageresizerFrame {
     CGFloat w = 0;
     CGFloat h = 0;
@@ -527,7 +534,7 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
         CGSize cropSize = CGSizeZero;
         
         if (isOriginImageSize) {
-            if (resizeImg.size.width >= self.minZoomScale && resizeImg.size.height >= self.minZoomScale) {
+            if (resizeImg.size.width >= self.minZoomScale && resizeImg.size.height >= self.minZoomScale && resizeImg.size.width <= self.maxZoomScale && resizeImg.size.height <= self.maxZoomScale) {
                 dispatch_async(dispatch_get_main_queue(), ^{
                     complete(resizeImg);
                 });
@@ -539,6 +546,13 @@ typedef NS_ENUM(NSUInteger, LGLinePosition) {
                 }
                 if (resizeImg.size.height < self.minZoomScale) {
                     cropSize = CGSizeMake(self.minZoomScale / resizeImg.size.height * resizeImg.size.width, self.minZoomScale);
+                }
+                if (resizeImg.size.width > self.maxZoomScale) {
+                    cropSize = CGSizeMake(self.maxZoomScale, self.maxZoomScale / resizeImg.size.width * resizeImg.size.height);
+                }
+                if (resizeImg.size.height > self.maxZoomScale) {
+                    cropSize = CGSizeMake(self.maxZoomScale / resizeImg.size.height * resizeImg.size.width, self.maxZoomScale);
+                    
                 }
             }
         }

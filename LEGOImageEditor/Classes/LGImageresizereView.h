@@ -38,6 +38,9 @@ NS_ASSUME_NONNULL_BEGIN
 /** 最小缩放分辨率尺寸 */
 @property (nonatomic) CGFloat minZoomScale;
 
+/** 最大缩放分辨率尺寸 */
+@property (nonatomic) CGFloat maxZoomScale;
+
 /** 裁剪宽高比 */
 @property (nonatomic) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;

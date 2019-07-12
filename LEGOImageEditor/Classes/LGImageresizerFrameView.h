@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) CGFloat minZoomScale;
 - (CGFloat)getCurrMaxmumZoomScale;
 
+@property (nonatomic, assign) CGFloat maxZoomScale;
+
 @property (nonatomic, assign) CGFloat resizeWHScale;
 - (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
 

@@ -386,6 +386,10 @@
         self.scrollView.maximumZoomScale = MAXFLOAT;
     }
 }
+- (void)setMaxZoomScale:(CGFloat)maxZoomScale {
+    _maxZoomScale = maxZoomScale;
+    self.frameView.maxZoomScale = maxZoomScale;
+}
 
 #pragma mark - 修改比例
 - (void)setResizeWHScale:(CGFloat)resizeWHScale {

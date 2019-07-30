@@ -10,11 +10,11 @@
 #endif
 #endif
 
-#import "LGImageresizerConfigure.h"
-#import "LGImageresizereView.h"
-#import "LGImageresizerFrameView.h"
-#import "LGImageresizerTypedef.h"
-#import "UIImage+LGExtension.h"
+#import "LEGOGeometry+ImageCropper.h"
+#import "LEGOImageCropperView.h"
+#import "LEGOImageScrollView.h"
+#import "LEGOImageTouchView.h"
+#import "UIImage+LEGOFixOrientation.h"
 
 FOUNDATION_EXPORT double LEGOImageEditorVersionNumber;
 FOUNDATION_EXPORT const unsigned char LEGOImageEditorVersionString[];

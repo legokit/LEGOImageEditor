@@ -7,14 +7,13 @@
 //
 
 #import "LGAppDelegate.h"
-#import "LGViewController.h"
-#import "LGImagePickerViewController.h"
+#import "LEGOViewController.h"
 
 @implementation LGAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[LGImagePickerViewController alloc] init]];
+    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:[[LEGOViewController alloc] init]];
     self.window.rootViewController = nav;
     nav.navigationBar.translucent = NO;
     [self.window makeKeyAndVisible];

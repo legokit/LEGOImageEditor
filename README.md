@@ -23,82 +23,86 @@ pod 'LEGOImageEditor'
 ## Usage
 
 ```
-/*!
- @method
- @brief 类方法（推荐）
- @param configure --- 包含了所有初始化参数
- @discussion 使用LGImageresizerConfigure配置好参数
+
+/**
+ 初始化方式
+
+ @param originalImage 原图
  */
-+ (instancetype)imageresizerViewWithConfigure:(LGImageresizerConfigure *)configure;
+- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame;
 
+/** 原图 */
+@property (nonatomic, strong, readonly) UIImage *originalImage;
 
-- (instancetype)initWithResizeImage:(UIImage *)resizeImage
-                              frame:(CGRect)frame
-                          fillColor:(UIColor *)fillColor
-                        strokeColor:(UIColor *)strokeColor
-                        borderColor:(UIColor *)borderColor
-                      resizeWHScale:(CGFloat)resizeWHScale;
+/** 最小裁剪分辨率，默认为 1.0f */
+@property (nonatomic, assign) CGFloat minZoomScale;
 
-@property (nonatomic, strong) UIScrollView *scrollView;
+/** 最大裁剪分辨率，默认为 MAXFLOAT */
+@property (nonatomic, assign) CGFloat maxZoomScale;
 
-/** 裁剪的图片 */
-@property (nonatomic, strong) UIImage *resizeImage;
+/** 缩放 */
+@property (nonatomic, copy) void (^didEndZooming)(CGFloat scale);
 
-/** 裁剪线颜色 */
-@property (nonatomic) UIColor *strokeColor;
+/** 裁剪框范围 */
+@property (nonatomic, assign, readonly) CGRect maskRect;
 
-/** 裁剪宽高比 */
-@property (nonatomic) CGFloat resizeWHScale;
-- (void)setResizeWHScale:(CGFloat)resizeWHScale animated:(BOOL)isAnimated;
+/** 裁剪框尺寸 */
+@property (nonatomic, assign, readonly) CGRect cropRect;
 
-/** 是否顺时针旋转（默认逆时针） */
-@property (nonatomic, assign) BOOL isClockwiseRotation;
+/** 裁剪框路径 */
+@property (nonatomic, copy, readonly) UIBezierPath *maskPath;
 
-/** 当前旋转的下标系数 */
-@property (nonatomic, assign) NSInteger directionIndex;
+/** 裁剪网格是否隐藏 */
+- (void)setLineHidden:(BOOL)hidden;
 
+/** 裁剪框颜色 */
+@property (nonatomic, strong) UIColor *maskColor;
+
+/** 裁剪框阴影 */
+@property (nonatomic, strong) UIColor *shadowColor;
+
+/** 网格线颜色 */
+@property (nonatomic, strong) UIColor *shapeLayerColor;
+
+/** 是否允许双指自由旋转，默认为 YES */
+@property (nonatomic, assign, getter=isRotationEnabled) BOOL rotationEnabled;
+
+/** 是否允许双击重置，默认为 YES */
+@property (nonatomic, assign, getter=isDoubleResetEnabled) BOOL doubleResetEnabled;
+
+/** 是否为顺势转旋转，默认为 NO */
+@property (nonatomic, assign, getter=isClockwiseRotation) BOOL clockwiseRotation;
+
+/** 是否允许旋转，当视图正在变化时，改值为 NO */
 @property (nonatomic, assign, readonly) BOOL isCanRotation;
 
+/** 是否允许修改尺寸，当视图正在变化时，改值为 NO */
 @property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
 
-/*!
- @method
- @brief 旋转图片
- @discussion 旋转90度，支持4个方向，分别是垂直向上、水平向左、垂直向下、水平向右
- */
-- (void)rotation;
+/** 重置 */
+- (void)reset:(BOOL)animated;
 
-/*!
- @method
- @brief 重置
- @discussion 回到最初状态
- */
-- (void)recovery;
+/** 设置【裁剪比例】 */
+@property (nonatomic, assign) CGSize resizeWHRatio;
 
-/*!
- @method
- @brief 原图尺寸裁剪
- @param complete --- 裁剪完成的回调
- @discussion 裁剪过程在子线程，回调已切回到主线程，可调用该方法前加上状态提示
- */
-- (void)originImageresizerWithComplete:(void(^)(UIImage *resizeImage))complete;
+- (void)setResizeWHRatio:(CGSize)resizeWHRatio;
 
-/*!
- @method
- @brief 压缩尺寸裁剪
- @param complete --- 裁剪完成的回调
- @param referenceWidth --- 裁剪的图片的参照宽度，例如设置为2000，则宽度固定为2000，高度按比例适配
- @discussion 裁剪过程在子线程，回调已切回到主线程，可调用该方法前加上状态提示
- */
-- (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete referenceWidth:(CGFloat)referenceWidth;
+- (void)setResizeWHRatio:(CGSize)resizeWHRatio animated:(BOOL)animated;
 
-/*!
- @method
- @brief 压缩尺寸裁剪（referenceWidth为0，为imageView的宽度）
- @param complete --- 裁剪完成的回调
- @discussion 裁剪过程在子线程，回调已切回到主线程，可调用该方法前加上状态提示
+/** 设置【旋转角度】 */
+@property (nonatomic, assign) CGFloat rotationAngle;
+
+- (void)rotation:(BOOL)animated;
+
+- (void)setRotationAngle:(CGFloat)rotationAngle;
+
+- (void)setRotationAngle:(CGFloat)rotationAngle animated:(BOOL)animated;
+
+/**
+ 裁剪
  */
-- (void)imageresizerWithComplete:(void(^)(UIImage *resizeImage))complete;
+- (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete;
+
 ```
 
 ## Author

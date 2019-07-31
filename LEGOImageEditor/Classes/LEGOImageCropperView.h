@@ -59,12 +59,6 @@
 /** 是否为顺势转旋转，默认为 NO */
 @property (nonatomic, assign, getter=isClockwiseRotation) BOOL clockwiseRotation;
 
-/** 是否允许旋转，当视图正在变化时，改值为 NO */
-@property (nonatomic, assign, readonly) BOOL isCanRotation;
-
-/** 是否允许修改尺寸，当视图正在变化时，改值为 NO */
-@property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
-
 /** 重置 */
 - (void)reset:(BOOL)animated;
 

@@ -31,8 +31,6 @@
 @property (nonatomic, strong) UIView *leftView;
 @property (nonatomic, strong) UIView *rightView;
 
-@property (nonatomic, assign) BOOL isCanRotation;
-@property (nonatomic, assign) BOOL isCanResizeWHScale;
 @property (strong, nonatomic) UITapGestureRecognizer *doubleTapGestureRecognizer;
 @property (strong, nonatomic) UIRotationGestureRecognizer *rotationGestureRecognizer;
 @end
@@ -153,8 +151,6 @@
         _rotationEnabled = YES;
         _doubleResetEnabled = YES;
         _clockwiseRotation = NO;
-        _isCanRotation = YES;
-        _isCanResizeWHScale = YES;
         _minZoomScale = 1.0f;
         _maxZoomScale = MAXFLOAT;
         [self setImageCropperView];
@@ -322,32 +318,24 @@
 }
 
 - (void)setResizeWHRatio:(CGSize)resizeWHRatio animated:(BOOL)animated {
-    if (self.isCanResizeWHScale) {
-        self.isCanRotation = NO;
-        self.isCanResizeWHScale = NO;
-        _resizeWHRatio = resizeWHRatio;
-        self.maskRect = [self imageCropViewControllerCustomMaskRect:self];
-        if (animated) {
-            [self setLineHidden:YES];
-            [UIView animateWithDuration:AnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                [self layoutImageScrollView:NO];
-                [self layoutOverlayView];
-                [self layoutMaskView];
-                [self layoutShapeLayerLattice];
-            } completion:^(BOOL finished) {
-                [self setLineHidden:NO];
-                self.isCanRotation = YES;
-                self.isCanResizeWHScale = YES;
-            }];
-        }
-        else {
+    _resizeWHRatio = resizeWHRatio;
+    self.maskRect = [self imageCropViewControllerCustomMaskRect:self];
+    if (animated) {
+        [self setLineHidden:YES];
+        [UIView animateWithDuration:AnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             [self layoutImageScrollView:NO];
             [self layoutOverlayView];
             [self layoutMaskView];
             [self layoutShapeLayerLattice];
-            self.isCanRotation = YES;
-            self.isCanResizeWHScale = YES;
-        }
+        } completion:^(BOOL finished) {
+            [self setLineHidden:NO];
+        }];
+    }
+    else {
+        [self layoutImageScrollView:NO];
+        [self layoutOverlayView];
+        [self layoutMaskView];
+        [self layoutShapeLayerLattice];
     }
 }
 
@@ -407,24 +395,16 @@
 }
 
 - (void)setRotationAngle:(CGFloat)rotationAngle animated:(BOOL)animated {
-    if (self.isCanRotation) {
-        self.isCanRotation = NO;
-        self.isCanResizeWHScale = NO;
-        if (animated) {
-            [UIView animateWithDuration:AnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-                CGAffineTransform transform = CGAffineTransformRotate(self.imageScrollView.transform, rotationAngle);
-                self.imageScrollView.transform = transform;
-            } completion:^(BOOL finished) {
-                self.isCanRotation = YES;
-                self.isCanResizeWHScale = YES;
-            }];
-        }
-        else {
+    if (animated) {
+        [UIView animateWithDuration:AnimateDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
             CGAffineTransform transform = CGAffineTransformRotate(self.imageScrollView.transform, rotationAngle);
             self.imageScrollView.transform = transform;
-            self.isCanRotation = YES;
-            self.isCanResizeWHScale = YES;
-        }
+        } completion:^(BOOL finished) {
+        }];
+    }
+    else {
+        CGAffineTransform transform = CGAffineTransformRotate(self.imageScrollView.transform, rotationAngle);
+        self.imageScrollView.transform = transform;
     }
 }
 
@@ -484,8 +464,10 @@
     
     movementRect.origin.x = CGRectGetMinX(maskRect) + (CGRectGetWidth(maskRect) - CGRectGetWidth(movementRect)) / 2.0;
     movementRect.origin.y = CGRectGetMinY(maskRect) + (CGRectGetHeight(maskRect) - CGRectGetHeight(movementRect)) / 2.0;
-    movementRect.origin.x = floor(CGRectGetMinX(movementRect));
-    movementRect.origin.y = floor(CGRectGetMinY(movementRect));
+//    movementRect.origin.x = floor(CGRectGetMinX(movementRect));
+//    movementRect.origin.y = floor(CGRectGetMinY(movementRect));
+    movementRect.origin.x = CGRectGetMinX(movementRect);
+    movementRect.origin.y = CGRectGetMinY(movementRect);
     movementRect = CGRectIntegral(movementRect);
     
     return movementRect;

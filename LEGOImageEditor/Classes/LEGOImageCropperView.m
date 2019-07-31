@@ -202,9 +202,13 @@
     CGAffineTransform transform = self.imageScrollView.transform;
     self.imageScrollView.transform = CGAffineTransformIdentity;
     if (animaited) {
-        [UIView animateWithDuration:0.13 animations:^{
+        NSTimeInterval duration = 0.1;
+        if (fabs(fabs(frame.origin.x) - fabs(self.imageScrollView.frame.origin.x)) <= 1) {
+            duration = AnimateDuration;
+        }
+        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.imageScrollView.frame = frame;
-        }];
+        } completion:nil];
     }
     else {
         self.imageScrollView.frame = frame;

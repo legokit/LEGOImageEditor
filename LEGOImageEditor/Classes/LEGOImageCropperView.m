@@ -205,7 +205,7 @@
     self.imageScrollView.transform = CGAffineTransformIdentity;
     if (animaited) {
         NSTimeInterval duration = 0.1;
-        if (0 <= fabs(self.diffAngle) && fabs(self.diffAngle) <= 0.001) {
+        if (0 < fabs(self.diffAngle) && fabs(self.diffAngle) <= 0.001) {
             duration = 1.0;
         }
         else if (0.001 < fabs(self.diffAngle) && fabs(self.diffAngle) < 0.002) {
@@ -217,7 +217,6 @@
                 duration = 0.25;
             }
         }
-        NSLog(@"duration=%f",duration);
         [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
             self.imageScrollView.frame = frame;
         } completion:nil];

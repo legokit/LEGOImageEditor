@@ -209,7 +209,7 @@
             duration = 1.0;
         }
         else if (0.001 < fabs(self.diffAngle) && fabs(self.diffAngle) < 0.002) {
-            duration = 0.6;
+            duration = 0.5;
         }
         else {
             CGFloat difference = fabs(fabs(frame.size.width) - fabs(self.imageScrollView.frame.size.width)); //

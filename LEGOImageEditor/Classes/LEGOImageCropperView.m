@@ -198,27 +198,18 @@
     }
 }
 
+
+
 #pragma mark -更新
-- (void)layoutImageScrollView:(BOOL)animaited {
+- (void)layoutImageScrollView:(BOOL)animaited { //
     CGRect frame = [self imageCropViewControllerCustomMovementRect:self];
     CGAffineTransform transform = self.imageScrollView.transform;
+    CGPoint center = self.imageScrollView.center;
     self.imageScrollView.transform = CGAffineTransformIdentity;
     if (animaited) {
-        NSTimeInterval duration = 0.1;
-        if (0 < fabs(self.diffAngle) && fabs(self.diffAngle) <= 0.001) {
-            duration = 1.0;
-        }
-        else if (0.001 < fabs(self.diffAngle) && fabs(self.diffAngle) < 0.002) {
-            duration = 0.5;
-        }
-        else {
-            CGFloat difference = fabs(fabs(frame.size.width) - fabs(self.imageScrollView.frame.size.width)); //
-            if (0 < difference && difference <= 1) {
-                duration = 0.25;
-            }
-        }
-        [UIView animateWithDuration:duration delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
-            self.imageScrollView.frame = frame;
+        [UIView animateWithDuration:[self trimmingDuration] delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            self.imageScrollView.frame = CGRectMake(self.imageScrollView.frame.origin.x, self.imageScrollView.frame.origin.y, frame.size.width + 1, frame.size.height + 1);
+            self.imageScrollView.center = center;
         } completion:nil];
     }
     else {
@@ -419,9 +410,19 @@
         }];
     }
     else {
-        CGAffineTransform transform = CGAffineTransformRotate(self.imageScrollView.transform, rotationAngle);
-        self.imageScrollView.transform = transform;
+        [UIView animateWithDuration:[self trimmingDuration] delay:0 options:UIViewAnimationOptionCurveLinear animations:^{
+            CGAffineTransform transform = CGAffineTransformRotate(self.imageScrollView.transform, rotationAngle);
+            self.imageScrollView.transform = transform;
+        } completion:nil];
     }
+}
+
+- (CGFloat)trimmingDuration {
+    NSTimeInterval duration = 0.1;
+    if (0 < fabs(self.diffAngle) && fabs(self.diffAngle) < 0.002) {
+        duration = 0.15;
+    }
+    return duration;
 }
 
 #pragma mark - UIColor

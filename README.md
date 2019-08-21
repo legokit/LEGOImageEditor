@@ -28,6 +28,12 @@ pod 'LEGOImageEditor'
     [self.imageCropperView rotation:YES];
 }
 
+// 旋转任意角度
+- (void)continueTrackingWithTouch:(CGFloat)value {
+    CGFloat rotationAngle = M_PI / 180 * value;
+    [self.imageCropperView setRotationAngle:rotationAngle];
+}
+
 // 修改比例 
 - (void)resizeWHScale:(id)sender {
     [self.imageCropperView setResizeWHRatio:CGSizeMake(2.0, 3.0) animated:YES];

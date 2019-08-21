@@ -16,10 +16,20 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 LEGOImageEditor is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-```ruby
-source 'https://github.com/legokit/Specs.git'
-pod 'LEGOImageEditor'
+### podfile
+
+To integrate LEGOImageEditor into your Xcode project using CocoaPods, specify it in your Podfile:
+
 ```
+source 'https://github.com/legokit/Specs.git'
+platform :ios, '8.0'
+
+target 'TargetName' do
+pod 'LEGOImageEditor'
+end
+
+```
+
 ## Usage
 
 ```

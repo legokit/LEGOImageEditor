@@ -23,6 +23,26 @@ pod 'LEGOImageEditor'
 ## Usage
 
 ```
+// 旋转 90°
+- (void)rotate:(id)sender {
+    [self.imageCropperView rotation:YES];
+}
+
+// 修改比例 
+- (void)resizeWHScale:(id)sender {
+    [self.imageCropperView setResizeWHRatio:CGSizeMake(2.0, 3.0) animated:YES];
+}
+
+// 裁图
+- (void)resize:(id)sender {
+    [self.imageCropperView cropImageWithComplete:^(UIImage *resizeImage) {
+        
+    }];
+}
+
+```
+
+```
 
 /**
  初始化方式

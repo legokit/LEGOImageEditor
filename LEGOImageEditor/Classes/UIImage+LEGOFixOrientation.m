@@ -94,6 +94,10 @@
     
     CGContextRef context = UIGraphicsGetCurrentContext();
     
+    CGContextSetShouldAntialias(context, YES);
+    
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    
     CGContextTranslateCTM(context, rotatedImageSize.width / 2, rotatedImageSize.height / 2);
     
     CGContextRotateCTM(context, angleInRadians);

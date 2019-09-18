@@ -549,6 +549,11 @@
     image = [image fixOrientation];
     CGSize contextSize = cropRect.size;
     UIGraphicsBeginImageContextWithOptions(contextSize, NO, originalImage.scale);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetShouldAntialias(context, YES);
+    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+    
     if (rotationAngle != 0) {
         image = [image rotateByAngle:rotationAngle];
     }

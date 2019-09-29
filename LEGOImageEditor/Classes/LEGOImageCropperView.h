@@ -24,6 +24,12 @@
 /** 原图 */
 @property (nonatomic, strong, readonly) UIImage *originalImage;
 
+/** 缩小图像滤波器 */
+@property (nonatomic, strong) CALayerContentsFilter minificationFilter;
+
+/** 放大图像滤波器 */
+@property (nonatomic, strong) CALayerContentsFilter magnificationFilter;
+
 /** 最小裁剪分辨率，默认为 1.0f */
 @property (nonatomic, assign) CGFloat minZoomScale;
 

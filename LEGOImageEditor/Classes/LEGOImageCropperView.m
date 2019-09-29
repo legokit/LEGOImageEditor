@@ -153,6 +153,8 @@
         _clockwiseRotation = NO;
         _minZoomScale = 1.0f;
         _maxZoomScale = MAXFLOAT;
+        _minificationFilter = kCAFilterTrilinear;
+        _magnificationFilter = kCAFilterTrilinear;
         [self setImageCropperView];
     }
     return self;
@@ -193,8 +195,11 @@
     if (!self.imageScrollView.zoomView && self.originalImage) {
         [self.imageScrollView displayImage:self.originalImage];
         [self reset:NO];
+         self.imageScrollView.zoomView.layer.minificationFilter = self.minificationFilter;
+         self.imageScrollView.zoomView.layer.magnificationFilter = self.magnificationFilter;
     }
 }
+
 
 
 

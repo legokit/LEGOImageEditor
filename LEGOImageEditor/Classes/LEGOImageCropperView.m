@@ -153,8 +153,8 @@
         _clockwiseRotation = NO;
         _minZoomScale = 1.0f;
         _maxZoomScale = MAXFLOAT;
-        _minificationFilter = kCAFilterTrilinear;
-        _magnificationFilter = kCAFilterTrilinear;
+        _minificationFilter = kCAFilterLinear;
+        _magnificationFilter = kCAFilterLinear;
         [self setImageCropperView];
     }
     return self;

@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "LEGOImageScrollView.h"
 
 @interface LEGOImageCropperView : UIView
 
@@ -16,6 +17,9 @@
  @param originalImage 原图
  */
 - (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame;
+
+/** 容器 */
+@property (nonatomic, strong) LEGOImageScrollView *imageScrollView;
 
 /** 原图 */
 @property (nonatomic, strong, readonly) UIImage *originalImage;

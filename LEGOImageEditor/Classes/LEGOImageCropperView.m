@@ -8,7 +8,6 @@
 
 #import "LEGOImageCropperView.h"
 #import "LEGOImageTouchView.h"
-#import "LEGOImageScrollView.h"
 #import "UIImage+LEGOFixOrientation.h"
 #import "LEGOGeometry+ImageCropper.h"
 
@@ -17,7 +16,6 @@
 
 @interface LEGOImageCropperView ()<UIGestureRecognizerDelegate,LEGOImageTouchDataSource>
 @property (nonatomic, strong) UIImage *originalImage;
-@property (nonatomic, strong) LEGOImageScrollView *imageScrollView;
 @property (nonatomic, strong) LEGOImageTouchView *overlayView;
 
 @property (nonatomic, assign) CGRect maskRect;

@@ -36,8 +36,17 @@
 /** 最大裁剪分辨率，默认为 MAXFLOAT */
 @property (nonatomic, assign) CGFloat maxZoomScale;
 
-/** 缩放 */
+/** 开始缩放 */
+@property (nonatomic, copy) void (^beginZooming)(void);
+
+/** 结束缩放 */
 @property (nonatomic, copy) void (^didEndZooming)(CGFloat scale);
+
+/** 开始拖动 */
+@property (nonatomic, copy) void (^beginDragging)(void);
+
+/** 结束拖动 */
+@property (nonatomic, copy) void (^didEndDragging)(void);
 
 /** 裁剪框范围 */
 @property (nonatomic, assign, readonly) CGRect maskRect;

@@ -255,9 +255,24 @@
     }
 }
 
+- (void)setBeginDragging:(void (^)(void))beginDragging {
+    _beginDragging = beginDragging;
+    self.imageScrollView.beginDragging = beginDragging;
+}
+
+- (void)setDidEndDragging:(void (^)(void))didEndDragging {
+    _didEndDragging = didEndDragging;
+    self.imageScrollView.didEndDragging = didEndDragging;
+}
+
+- (void)setBeginZooming:(void (^)(void))beginZooming {
+    _beginZooming = beginZooming;
+    self.imageScrollView.beginZooming = beginZooming;
+}
+
 - (void)setDidEndZooming:(void (^)(CGFloat scale))didEndZooming {
     _didEndZooming = didEndZooming;
-    self.imageScrollView.zoom = didEndZooming;
+    self.imageScrollView.didEndZooming = didEndZooming;
 }
 
 #pragma mark -重置

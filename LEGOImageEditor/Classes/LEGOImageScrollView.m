@@ -63,17 +63,31 @@
 }
 
 #pragma mark - UIScrollViewDelegate
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
-    return _zoomView;
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
+    !self.beginDragging ? :self.beginDragging();
+}
+
+- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_AVAILABLE_IOS(5_0) {
+    !self.didEndDragging ? :self.didEndDragging();
+}
+
+- (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view NS_AVAILABLE_IOS(3_2) {
+    !self.beginZooming ? :self.beginZooming();
+}
+
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view atScale:(CGFloat)scale {
+    !self.didEndZooming ? :self.didEndZooming(scale);
 }
 
 - (void)scrollViewDidZoom:(__unused UIScrollView *)scrollView {
     [self centerZoomView];
 }
 
-- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view atScale:(CGFloat)scale {
-    !self.zoom ? :self.zoom(scale);
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+    return _zoomView;
 }
+
 
 
 - (void)centerZoomView {

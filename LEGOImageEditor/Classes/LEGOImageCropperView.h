@@ -45,8 +45,8 @@
 /** 开始拖动 */
 @property (nonatomic, copy) void (^beginDragging)(void);
 
-/** 结束拖动 */
-@property (nonatomic, copy) void (^didEndDragging)(void);
+/** 结束拖动，decelerate 减速状态 */
+@property (nonatomic, copy) void (^didEndDragging)(BOOL decelerate);
 
 /** 裁剪框范围 */
 @property (nonatomic, assign, readonly) CGRect maskRect;

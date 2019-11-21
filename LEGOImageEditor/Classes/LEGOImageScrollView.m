@@ -68,8 +68,8 @@
     !self.beginDragging ? :self.beginDragging();
 }
 
-- (void)scrollViewWillEndDragging:(UIScrollView *)scrollView withVelocity:(CGPoint)velocity targetContentOffset:(inout CGPoint *)targetContentOffset NS_AVAILABLE_IOS(5_0) {
-    !self.didEndDragging ? :self.didEndDragging();
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
+    !self.didEndDragging ? :self.didEndDragging(decelerate);
 }
 
 - (void)scrollViewWillBeginZooming:(UIScrollView *)scrollView withView:(nullable UIView *)view NS_AVAILABLE_IOS(3_2) {

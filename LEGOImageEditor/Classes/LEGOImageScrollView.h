@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) void (^beginDragging)(void);
 
 /** 结束拖动 */
-@property (nonatomic, copy) void (^didEndDragging)(void);
+@property (nonatomic, copy) void (^didEndDragging)(BOOL decelerate);
 
 
 - (void)displayImage:(UIImage *)image;

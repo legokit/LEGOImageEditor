@@ -260,7 +260,7 @@
     self.imageScrollView.beginDragging = beginDragging;
 }
 
-- (void)setDidEndDragging:(void (^)(void))didEndDragging {
+- (void)setDidEndDragging:(void (^)(BOOL decelerate))didEndDragging {
     _didEndDragging = didEndDragging;
     self.imageScrollView.didEndDragging = didEndDragging;
 }

@@ -1,9 +1,6 @@
 # LEGOImageEditor
 
-[![CI Status](https://img.shields.io/travis/564008993@qq.com/LEGOImageEditor.svg?style=flat)](https://travis-ci.org/564008993@qq.com/LEGOImageEditor)
-[![Version](https://img.shields.io/cocoapods/v/LEGOImageEditor.svg?style=flat)](https://cocoapods.org/pods/LEGOImageEditor)
-[![License](https://img.shields.io/cocoapods/l/LEGOImageEditor.svg?style=flat)](https://cocoapods.org/pods/LEGOImageEditor)
-[![Platform](https://img.shields.io/cocoapods/p/LEGOImageEditor.svg?style=flat)](https://cocoapods.org/pods/LEGOImageEditor)
+LEGOImageEditor, crop image, Picture cropper, support to resizeWHScale, set size, rotate angle, fine adjust angle, image crop. 图片裁剪，支持大小缩放，设置大小，旋转角度，微调角度，裁剪图片。。
 
 ## Example
 
@@ -13,138 +10,73 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Installation
 
-LEGOImageEditor is available through [CocoaPods](https://cocoapods.org). To install
+LEGOPhotosManager is available through [CocoaPods](https://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-### podfile
-
-To integrate LEGOImageEditor into your Xcode project using CocoaPods, specify it in your Podfile:
-
-```
+```ruby
 source 'https://github.com/legokit/Specs.git'
-platform :ios, '8.0'
-
-target 'TargetName' do
 pod 'LEGOImageEditor'
-end
-
 ```
+
+**LEGOImageEditor** is the image crop tool, you can crop image, Picture cropper, support to resizeWHScale, set size, rotate angle, fine adjust angle, image crop. 图片裁剪，支持大小缩放，设置大小，旋转角度，微调角度，裁剪图片
+
+## Features
+
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Usage](#usage)
+- [License](#license)
+
+## Features
+
+- [x] Resize WH Scale.  缩放尺寸
+- [x] Allow two fingers rotate angle freely.  双指调整缩放旋转
+- [x] rotate angle by control.  角度外部控制
+- [x] Angle fine tuning.  角度微调  
+- [x] Double click to reset picture.  双击重置
+
+## Requirements
+
+- iOS 8.0+
+- Xcode 10.0+
+
+## Installation
+
+### CocoaPods
+
+[CocoaPods](https://cocoapods.org) is a dependency manager for Cocoa projects. For usage and installation instructions, visit their website. To integrate LEGOImageCropper into your Xcode project using CocoaPods, specify it in your `Podfile`:
+
+```ruby
+source 'https://github.com/legokit/Specs.git'
+pod 'LEGOImageEditor'
+```
+
+### Manually
+
+If you prefer not to use any of the dependency mentioned above, you can integrate LEGOImageCropper into your project manually. Just drag & drop the `Sources` folder to your project.
 
 ## Usage
 
 ```
-// 旋转 90°
-- (void)rotate:(id)sender {
-    [self.imageCropperView rotation:YES];
-}
+/** crop picture 裁剪方法实例 */
 
-// 旋转任意角度
-- (void)continueTrackingWithTouch:(CGFloat)value {
-    CGFloat rotationAngle = M_PI / 180 * value;
-    [self.imageCropperView setRotationAngle:rotationAngle];
-}
-
-// 修改比例 
-- (void)resizeWHScale:(id)sender {
-    [self.imageCropperView setResizeWHRatio:CGSizeMake(2.0, 3.0) animated:YES];
-}
-
-// 裁图
-- (void)resize:(id)sender {
     [self.imageCropperView cropImageWithComplete:^(UIImage *resizeImage) {
-        
+        NSLog(@"resizeImage=%@",resizeImage);
     }];
-}
-
+    
 ```
 
-```
 
-/**
- 初始化方式
-
- @param originalImage 原图
- */
-- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame;
-
-/** 原图 */
-@property (nonatomic, strong, readonly) UIImage *originalImage;
-
-/** 最小裁剪分辨率，默认为 1.0f */
-@property (nonatomic, assign) CGFloat minZoomScale;
-
-/** 最大裁剪分辨率，默认为 MAXFLOAT */
-@property (nonatomic, assign) CGFloat maxZoomScale;
-
-/** 缩放 */
-@property (nonatomic, copy) void (^didEndZooming)(CGFloat scale);
-
-/** 裁剪框范围 */
-@property (nonatomic, assign, readonly) CGRect maskRect;
-
-/** 裁剪框尺寸 */
-@property (nonatomic, assign, readonly) CGRect cropRect;
-
-/** 裁剪框路径 */
-@property (nonatomic, copy, readonly) UIBezierPath *maskPath;
-
-/** 裁剪网格是否隐藏 */
-- (void)setLineHidden:(BOOL)hidden;
-
-/** 裁剪框颜色 */
-@property (nonatomic, strong) UIColor *maskColor;
-
-/** 裁剪框阴影 */
-@property (nonatomic, strong) UIColor *shadowColor;
-
-/** 网格线颜色 */
-@property (nonatomic, strong) UIColor *shapeLayerColor;
-
-/** 是否允许双指自由旋转，默认为 YES */
-@property (nonatomic, assign, getter=isRotationEnabled) BOOL rotationEnabled;
-
-/** 是否允许双击重置，默认为 YES */
-@property (nonatomic, assign, getter=isDoubleResetEnabled) BOOL doubleResetEnabled;
-
-/** 是否为顺势转旋转，默认为 NO */
-@property (nonatomic, assign, getter=isClockwiseRotation) BOOL clockwiseRotation;
-
-/** 是否允许旋转，当视图正在变化时，改值为 NO */
-@property (nonatomic, assign, readonly) BOOL isCanRotation;
-
-/** 是否允许修改尺寸，当视图正在变化时，改值为 NO */
-@property (nonatomic, assign, readonly) BOOL isCanResizeWHScale;
-
-/** 重置 */
-- (void)reset:(BOOL)animated;
-
-/** 设置【裁剪比例】 */
-@property (nonatomic, assign) CGSize resizeWHRatio;
-
-- (void)setResizeWHRatio:(CGSize)resizeWHRatio;
-
-- (void)setResizeWHRatio:(CGSize)resizeWHRatio animated:(BOOL)animated;
-
-/** 设置【旋转角度】 */
-@property (nonatomic, assign) CGFloat rotationAngle;
-
-- (void)rotation:(BOOL)animated;
-
-- (void)setRotationAngle:(CGFloat)rotationAngle;
-
-- (void)setRotationAngle:(CGFloat)rotationAngle animated:(BOOL)animated;
-
-/**
- 裁剪
- */
-- (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete;
-
-```
+For details, see example for LEGOImageCropper.
 
 ## Author
 
-564008993@qq.com, 564008993@qq.com
+564008993@qq.com, yangqingren@yy.com
 
 ## License
 
 LEGOImageEditor is available under the MIT license. See the LICENSE file for more info.
+
+
+

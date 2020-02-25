@@ -78,6 +78,10 @@
 /** 是否为顺势转旋转，默认为 NO */
 @property (nonatomic, assign, getter=isClockwiseRotation) BOOL clockwiseRotation;
 
+/** 是否为外圈适应，默认为 YES */
+@property (nonatomic, assign) BOOL isOuterBoundary;
+;
+
 /** 重置 */
 - (void)reset:(BOOL)animated;
 

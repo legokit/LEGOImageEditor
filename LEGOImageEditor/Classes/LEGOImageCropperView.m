@@ -155,6 +155,7 @@
         _maxZoomScale = MAXFLOAT;
         _minificationFilter = kCAFilterLinear;
         _magnificationFilter = kCAFilterLinear;
+        _isOuterBoundary = YES;
         [self setImageCropperView];
     }
     return self;
@@ -204,8 +205,14 @@
 
 
 #pragma mark -更新
-- (void)layoutImageScrollView:(BOOL)animaited { //
-    CGRect frame = [self imageCropViewControllerCustomMovementRect:self];
+- (void)layoutImageScrollView:(BOOL)animaited {
+    CGRect frame = CGRectZero;
+    if (self.isOuterBoundary) {
+        frame = [self imageCropViewControllerCustomMovementRect:self];
+    }
+    else {
+        frame = self.maskRect;
+    }
     CGAffineTransform transform = self.imageScrollView.transform;
     CGPoint center = self.imageScrollView.center;
     self.imageScrollView.transform = CGAffineTransformIdentity;
@@ -480,13 +487,37 @@
     //        maskWidth -= 1.0f;
     //    } while (maskHeight != floor(maskHeight));
     //    maskWidth += 1.0f;
-    
+
     CGSize maskSize = CGSizeMake(maskWidth, maskHeight);
     CGRect maskRect = CGRectMake((viewWidth - maskSize.width) / 2.0,
                                  (viewHeight - maskSize.height) / 2.0,
                                  maskSize.width,
                                  maskSize.height);
+    
+#warning yangqingrne----
+//    CGFloat viewWidth = CGRectGetWidth(view.bounds);
+//    CGFloat viewHeight = CGRectGetHeight(view.bounds);
+//
+//    CGFloat diameter;
+//    if ([self isPortraitInterfaceOrientation]) {
+//        diameter = MIN(viewWidth, viewHeight) - 15 * 2;
+//    } else {
+//        diameter = MIN(viewWidth, viewHeight) - 15 * 2;
+//    }
+//
+//    CGSize maskSize = CGSizeMake(diameter, diameter);
+//
+//    self.maskRect = CGRectMake((viewWidth - maskSize.width) * 0.5f,
+//                               (viewHeight - maskSize.height) * 0.5f,
+//                               maskSize.width,
+//                               maskSize.height);
+    
     return maskRect;
+}
+
+- (BOOL)isPortraitInterfaceOrientation
+{
+    return CGRectGetHeight(self.bounds) > CGRectGetWidth(self.bounds);
 }
 
 - (CGRect)imageCropViewControllerCustomMovementRect:(LEGOImageCropperView *)view {
@@ -509,21 +540,26 @@
 }
 
 - (UIBezierPath *)imageCropViewControllerCustomMaskPath:(LEGOImageCropperView *)view {
-    CGRect rect = view.maskRect;
-    CGPoint point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
-    CGPoint point2 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
-    CGPoint point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect));
-    CGPoint point4 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect));
-    
-    UIBezierPath *rectangle = [UIBezierPath bezierPath];
-    [rectangle moveToPoint:point1];
-    [rectangle addLineToPoint:point2];
-    [rectangle addLineToPoint:point3];
-    [rectangle addLineToPoint:point4];
-    [rectangle closePath];
-    
-    return rectangle;
+    if (self.isOuterBoundary) {
+        CGRect rect = view.maskRect;
+        CGPoint point1 = CGPointMake(CGRectGetMinX(rect), CGRectGetMaxY(rect));
+        CGPoint point2 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMaxY(rect));
+        CGPoint point3 = CGPointMake(CGRectGetMaxX(rect), CGRectGetMinY(rect));
+        CGPoint point4 = CGPointMake(CGRectGetMinX(rect), CGRectGetMinY(rect));
+        
+        UIBezierPath *rectangle = [UIBezierPath bezierPath];
+        [rectangle moveToPoint:point1];
+        [rectangle addLineToPoint:point2];
+        [rectangle addLineToPoint:point3];
+        [rectangle addLineToPoint:point4];
+        [rectangle closePath];
+        return rectangle;
+    }
+    else {
+        return [UIBezierPath bezierPathWithOvalInRect:self.maskRect];
+    }
 }
+
 
 #pragma mark -裁剪
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete {

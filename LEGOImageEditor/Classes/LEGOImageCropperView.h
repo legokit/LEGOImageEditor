@@ -106,6 +106,9 @@
  */
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete;
 
+- (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete originalImage:(UIImage *)originalImage;
+
+
 @end
 
 

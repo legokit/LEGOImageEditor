@@ -580,6 +580,26 @@
     });
 }
 
+- (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete originalImage:(UIImage *)originalImage
+{
+    originalImage = [originalImage cropBySize:self.originalImage.size];
+    
+    CGRect cropRect = self.cropRect;
+    CGRect imageRect = self.imageRect;
+    CGFloat rotationAngle = self.rotationAngle;
+    CGFloat zoomScale = self.imageScrollView.zoomScale;
+    UIBezierPath *maskPath = self.maskPath;
+    
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        UIImage *croppedImage = [self croppedImage:originalImage cropRect:cropRect imageRect:imageRect rotationAngle:rotationAngle zoomScale:zoomScale maskPath:maskPath];
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self imageCropViewController:self didCropImage:croppedImage usingCropRect:cropRect rotationAngle:rotationAngle complete:complete];
+        });
+    });
+}
+
 - (UIImage *)imageWithImage:(UIImage *)image inRect:(CGRect)rect scale:(CGFloat)scale imageOrientation:(UIImageOrientation)imageOrientation {
     if (!image.images) {
         CGImageRef cgImage = CGImageCreateWithImageInRect(image.CGImage, rect);

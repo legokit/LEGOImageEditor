@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)displayImage:(UIImage *)image;
 
-- (void)notDisplayImage:(UIImage *)image;
+- (void)notDisplaySize:(CGSize)size;
 
 @end
 

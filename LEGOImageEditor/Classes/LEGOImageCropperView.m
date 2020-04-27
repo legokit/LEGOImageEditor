@@ -16,8 +16,11 @@
 
 @interface LEGOImageCropperView ()<UIGestureRecognizerDelegate,LEGOImageTouchDataSource>
 @property (nonatomic, strong) UIImage *originalImage;
+@property (nonatomic, assign) CGSize size;
+
+@property (nonatomic, assign) CGSize originalImageSize;
+
 @property (nonatomic, strong) LEGOImageTouchView *overlayView;
-@property (nonatomic, assign) BOOL notRrender;
 
 @property (nonatomic, assign) CGRect maskRect;
 @property (nonatomic, copy) UIBezierPath *maskPath;
@@ -147,10 +150,9 @@
     return self;
 }
 
-- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame notRrender:(BOOL)notRrende {
+- (instancetype)initWithSize:(CGSize)size frame:(CGRect)frame {
     if (self = [self initWithFrame:frame]) {
-        _notRrender = notRrende;
-        _originalImage = originalImage;
+        _size = size;
     }
     return self;
 }
@@ -202,12 +204,12 @@
 - (void)layoutSubviews {
     [super layoutSubviews];
     
-    if (!self.imageScrollView.zoomView && self.originalImage) {
-        if (self.notRrender) {
-            [self.imageScrollView notDisplayImage:self.originalImage];
-        }
-        else {
+    if (!self.imageScrollView.zoomView && (self.originalImage || ![[NSValue valueWithCGSize:self.size] isEqualToValue:[NSValue valueWithCGSize:CGSizeZero]])) {
+        if (self.originalImage) {
             [self.imageScrollView displayImage:self.originalImage];
+        }
+        else if (![[NSValue valueWithCGSize:self.size] isEqualToValue:[NSValue valueWithCGSize:CGSizeZero]]) {
+            [self.imageScrollView notDisplaySize:self.size];
         }
         [self reset:NO];
          self.imageScrollView.zoomView.layer.minificationFilter = self.minificationFilter;
@@ -350,9 +352,9 @@
 - (void)resetZoomScale {
     CGFloat zoomScale = 1.0f;
     if (CGRectGetWidth(self.bounds) > CGRectGetHeight(self.bounds)) {
-        zoomScale = CGRectGetHeight(self.bounds) / self.originalImage.size.height;
+        zoomScale = CGRectGetHeight(self.bounds) / self.originalImageSize.height;
     } else {
-        zoomScale = CGRectGetWidth(self.bounds) / self.originalImage.size.width;
+        zoomScale = CGRectGetWidth(self.bounds) / self.originalImageSize.width;
     }
     self.imageScrollView.zoomScale = zoomScale;
 }
@@ -596,8 +598,8 @@
 
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete originalImage:(UIImage *)originalImage
 {
-    originalImage = [originalImage cropBySize:self.originalImage.size];
-    
+    originalImage = [originalImage cropBySize:self.originalImageSize];
+    self.originalImage = originalImage;
     CGRect cropRect = self.cropRect;
     CGRect imageRect = self.imageRect;
     CGFloat rotationAngle = self.rotationAngle;
@@ -654,6 +656,16 @@
     return croppedImage;
 }
 
+- (CGSize)originalImageSize
+{
+    if (self.originalImage) {
+        return self.originalImage.size;
+    }
+    else {
+        return self.size;
+    }
+}
+
 
 - (CGRect)imageRect {
     float zoomScale = 1.0 / self.imageScrollView.zoomScale;
@@ -664,7 +676,7 @@
     imageRect.size.height = CGRectGetHeight(self.imageScrollView.bounds) * zoomScale;
     imageRect = RSKRectNormalize(imageRect);
     
-    CGSize imageSize = self.originalImage.size;
+    CGSize imageSize = self.originalImageSize;
     CGFloat x = CGRectGetMinX(imageRect);
     CGFloat y = CGRectGetMinY(imageRect);
     CGFloat width = CGRectGetWidth(imageRect);

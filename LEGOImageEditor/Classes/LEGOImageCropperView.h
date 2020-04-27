@@ -18,7 +18,7 @@
  */
 - (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame;
 
-- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame notRrender:(BOOL)notRrender;
+- (instancetype)initWithSize:(CGSize)size frame:(CGRect)frame;
 
 
 /** 容器 */

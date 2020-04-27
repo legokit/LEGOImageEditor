@@ -126,15 +126,15 @@
     [self configureForImageSize:image.size];
 }
 
-- (void)notDisplayImage:(UIImage *)image
+- (void)notDisplaySize:(CGSize)size
 {
     [_zoomView removeFromSuperview];
     _zoomView = nil;
     self.zoomScale = 1.0;
     _zoomView = [[UIImageView alloc] init];
-    _zoomView.frame = CGRectMake(0, 0, image.size.width, image.size.height);
+    _zoomView.frame = CGRectMake(0, 0, size.width, size.height);
     [self addSubview:_zoomView];
-    [self configureForImageSize:image.size];
+    [self configureForImageSize:size];
 }
 
 - (void)configureForImageSize:(CGSize)imageSize {

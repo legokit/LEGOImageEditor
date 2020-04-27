@@ -18,6 +18,9 @@
  */
 - (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame;
 
+- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame notRrender:(BOOL)notRrender;
+
+
 /** 容器 */
 @property (nonatomic, strong) LEGOImageScrollView *imageScrollView;
 
@@ -80,8 +83,7 @@
 
 /** 是否为外圈适应，默认为 YES */
 @property (nonatomic, assign) BOOL isOuterBoundary;
-;
-
+ 
 /** 重置 */
 - (void)reset:(BOOL)animated;
 

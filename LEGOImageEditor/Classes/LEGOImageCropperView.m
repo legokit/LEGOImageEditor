@@ -17,6 +17,7 @@
 @interface LEGOImageCropperView ()<UIGestureRecognizerDelegate,LEGOImageTouchDataSource>
 @property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, strong) LEGOImageTouchView *overlayView;
+@property (nonatomic, assign) BOOL notRrender;
 
 @property (nonatomic, assign) CGRect maskRect;
 @property (nonatomic, copy) UIBezierPath *maskPath;
@@ -146,6 +147,14 @@
     return self;
 }
 
+- (instancetype)initWithImage:(UIImage *)originalImage frame:(CGRect)frame notRrender:(BOOL)notRrende {
+    if (self = [self initWithFrame:frame]) {
+        _notRrender = notRrende;
+        _originalImage = originalImage;
+    }
+    return self;
+}
+
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         _rotationEnabled = YES;
@@ -194,7 +203,12 @@
     [super layoutSubviews];
     
     if (!self.imageScrollView.zoomView && self.originalImage) {
-        [self.imageScrollView displayImage:self.originalImage];
+        if (self.notRrender) {
+            [self.imageScrollView notDisplayImage:self.originalImage];
+        }
+        else {
+            [self.imageScrollView displayImage:self.originalImage];
+        }
         [self reset:NO];
          self.imageScrollView.zoomView.layer.minificationFilter = self.minificationFilter;
          self.imageScrollView.zoomView.layer.magnificationFilter = self.magnificationFilter;

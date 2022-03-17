@@ -401,11 +401,7 @@
 - (void)handleRotation:(UIRotationGestureRecognizer *)gestureRecognizer {
     [self setRotationAngle:gestureRecognizer.rotation animated:NO];
     gestureRecognizer.rotation = 0;
-    if (gestureRecognizer.state == UIGestureRecognizerStateBegan) {
-        [self setLineHidden:YES];
-    }
-    else if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
-        [self setLineHidden:NO];
+    if (gestureRecognizer.state == UIGestureRecognizerStateEnded) {
         self.maskRect = [self imageCropViewControllerCustomMaskRect:self];
         [self layoutImageScrollView:YES];
         [self layoutOverlayView];

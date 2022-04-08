@@ -634,6 +634,18 @@
     UIImage *image = [self imageWithImage:originalImage inRect:imageRect scale:originalImage.scale imageOrientation:originalImage.imageOrientation];
     image = [image fixOrientation];
     CGSize contextSize = cropRect.size;
+    
+    int width = floor(contextSize.width);
+    int height = floor(contextSize.height);
+
+    if (width % 2 == 1) {
+        width -= 1;
+    }
+    if (height % 2 == 1) {
+        height -= 1;
+    }
+    contextSize = CGSizeMake(width, height);
+    
     UIGraphicsBeginImageContextWithOptions(contextSize, NO, originalImage.scale);
     
     CGContextRef context = UIGraphicsGetCurrentContext();

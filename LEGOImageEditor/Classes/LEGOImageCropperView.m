@@ -595,7 +595,7 @@
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete originalImage:(UIImage *)originalImage
 {
     originalImage = [originalImage cropBySize:self.originalImageSize];
-    self.originalImage = originalImage;
+//    self.originalImage = originalImage;
     CGRect cropRect = self.cropRect;
     CGRect imageRect = self.imageRect;
     CGFloat rotationAngle = self.rotationAngle;

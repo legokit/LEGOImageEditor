@@ -15,7 +15,6 @@
 #define M_PI90Degree (M_PI / 2.0000000001)
 
 @interface LEGOImageCropperView ()<UIGestureRecognizerDelegate,LEGOImageTouchDataSource>
-@property (nonatomic, strong) UIImage *originalImage;
 @property (nonatomic, assign) CGSize size;
 
 @property (nonatomic, assign) CGSize originalImageSize;
@@ -595,7 +594,7 @@
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete originalImage:(UIImage *)originalImage
 {
     originalImage = [originalImage cropBySize:self.originalImageSize];
-//    self.originalImage = originalImage;
+    self.originalImage = originalImage;
     CGRect cropRect = self.cropRect;
     CGRect imageRect = self.imageRect;
     CGFloat rotationAngle = self.rotationAngle;

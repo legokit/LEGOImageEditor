@@ -25,7 +25,7 @@
 @property (nonatomic, strong) LEGOImageScrollView *imageScrollView;
 
 /** 原图 */
-@property (nonatomic, strong, readonly) UIImage *originalImage;
+@property (nonatomic, strong) UIImage *originalImage;
 
 /** 缩小图像滤波器 */
 @property (nonatomic, strong) CALayerContentsFilter minificationFilter;

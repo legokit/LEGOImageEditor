@@ -575,13 +575,18 @@
 #pragma mark -裁剪
 - (void)cropImageWithComplete:(void(^)(UIImage *resizeImage))complete {
     UIImage *originalImage = self.originalImage;
-    CGRect cropRect = self.cropRect;
+    __block CGRect cropRect = self.cropRect;
     CGRect imageRect = self.imageRect;
     CGFloat rotationAngle = self.rotationAngle;
     CGFloat zoomScale = self.imageScrollView.zoomScale;
     UIBezierPath *maskPath = self.maskPath;
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        CGFloat salce = imageRect.size.height / cropRect.size.height;
+        if (salce > 1.0 &&
+            salce < 1.005) {
+            cropRect = CGRectMake(cropRect.origin.x * salce, cropRect.origin.y * salce, cropRect.size.width * salce, cropRect.size.height * salce);
+        }
         
         UIImage *croppedImage = [self croppedImage:originalImage cropRect:cropRect imageRect:imageRect rotationAngle:rotationAngle zoomScale:zoomScale maskPath:maskPath];
         
@@ -751,13 +756,17 @@
     cropRect.origin.y = -CGRectGetMinY(imageFrame) + CGRectGetMinY(maskRect);
     
     cropRect = CGRectApplyAffineTransform(cropRect, CGAffineTransformMakeScale(zoomScale, zoomScale));
-        
+    
+    cropRect = RSKRectNormalize(cropRect);
+    
     CGFloat imageScale = self.originalImage.scale;
     cropRect = CGRectApplyAffineTransform(cropRect, CGAffineTransformMakeScale(imageScale, imageScale));
     
     self.imageScrollView.frame = imageScrollViewFrame;
     self.imageScrollView.contentOffset = imageScrollViewContentOffset;
     self.imageScrollView.transform = imageScrollViewTransform;
+    
+    
     
     return cropRect;
 }

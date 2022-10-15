@@ -1,6 +1,6 @@
 {
   "name": "LEGOImageEditor",
-  "version": "0.1.5",
+  "version": "0.3.7",
   "summary": "A short description of LEGOImageEditor.",
   "description": "TODO: Add long description of the pod here.",
   "homepage": "https://github.com/legokit/LEGOImageEditor",
@@ -13,7 +13,7 @@
   },
   "source": {
     "git": "https://github.com/legokit/LEGOImageEditor.git",
-    "tag": "0.1.5"
+    "tag": "0.3.7"
   },
   "platforms": {
     "ios": "8.0"
